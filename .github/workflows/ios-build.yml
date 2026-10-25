@@ -1,0 +1,59 @@
+# Builds an unsigned iPhone app (.ipa) on a free GitHub-hosted Mac.
+# Install it on your iPhone from Windows with Sideloadly (it signs the app with your Apple ID).
+# See IPHONE.md for the full steps.
+name: iOS build (unsigned IPA)
+
+on:
+  workflow_dispatch:
+    inputs:
+      api_base_url:
+        description: "Default server address baked into the app (you can still change it in the app)"
+        required: false
+        default: "http://192.168.18.128:8000"
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/ios-build.yml"
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.0
+          cache: true
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Analyze and test
+        run: |
+          flutter analyze --no-fatal-infos
+          flutter test
+
+      - name: Build iOS app (no code signing)
+        env:
+          API_BASE_URL: ${{ github.event.inputs.api_base_url || 'http://192.168.18.128:8000' }}
+        run: flutter build ios --release --no-codesign --dart-define=API_BASE_URL="$API_BASE_URL"
+
+      - name: Package as IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry DerMedicsAI-unsigned.ipa Payload
+          ls -lh DerMedicsAI-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DerMedicsAI-iOS-unsigned
+          path: mobile/DerMedicsAI-unsigned.ipa
+          retention-days: 14

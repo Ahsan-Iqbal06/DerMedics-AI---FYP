@@ -1,0 +1,512 @@
+{
+  "acne": {
+    "display_name": "Acne",
+    "overview": "Acne is a common skin condition where hair follicles become clogged with oil and dead skin cells, leading to whiteheads, blackheads, pimples or deeper cysts. Possible triggers include hormones, certain skin products, stress and some medicines.",
+    "symptoms": [
+      "Whiteheads or blackheads",
+      "Red, tender bumps (papules)",
+      "Pus-filled pimples",
+      "Painful lumps under the skin in severe cases"
+    ],
+    "precautions": [
+      "Wash gently twice daily with a mild cleanser",
+      "Avoid picking or squeezing spots",
+      "Use non-comedogenic (oil-free) products",
+      "Keep hair and phone screens clean"
+    ],
+    "when_to_see_doctor": "See a dermatologist if acne is painful, leaves scars, or does not improve after a few weeks of over-the-counter care.",
+    "medicines": [
+      {
+        "name": "Benzoyl peroxide 2.5–5% gel",
+        "type": "Topical",
+        "usage_note": "Often used once daily on affected areas; may cause dryness at first.",
+        "prescription_required": false,
+        "caution": "Can bleach fabrics; avoid eyes and lips."
+      },
+      {
+        "name": "Adapalene 0.1% gel (topical retinoid)",
+        "type": "Topical",
+        "usage_note": "Usually applied thinly at night.",
+        "prescription_required": false,
+        "caution": "Not recommended in pregnancy; increases sun sensitivity."
+      },
+      {
+        "name": "Clindamycin 1% gel (topical antibiotic)",
+        "type": "Topical",
+        "usage_note": "Generally combined with benzoyl peroxide to reduce resistance.",
+        "prescription_required": true,
+        "caution": "Use only when clinically indicated and under professional guidance."
+      }
+    ]
+  },
+  "eczema": {
+    "display_name": "Eczema (Atopic dermatitis)",
+    "overview": "Eczema is a long-term condition that makes skin dry, itchy and inflamed. It often comes in flares and can be triggered by soaps, weather changes, allergens or stress.",
+    "symptoms": [
+      "Dry, itchy skin",
+      "Red or darker patches",
+      "Rough or scaly skin",
+      "Oozing or crusting during flares"
+    ],
+    "precautions": [
+      "Moisturise at least twice daily",
+      "Use fragrance-free soaps and lukewarm water",
+      "Avoid known triggers and scratching",
+      "Wear soft cotton clothing"
+    ],
+    "when_to_see_doctor": "See a doctor if itching disturbs sleep, the skin looks infected (yellow crusts, pus) or flares are frequent.",
+    "medicines": [
+      {
+        "name": "Emollient / fragrance-free moisturiser",
+        "type": "Topical",
+        "usage_note": "Applied generously and often, especially after bathing.",
+        "prescription_required": false,
+        "caution": "Choose products without fragrance or dyes."
+      },
+      {
+        "name": "Hydrocortisone 1% cream (mild steroid)",
+        "type": "Topical",
+        "usage_note": "Short courses on flare areas.",
+        "prescription_required": false,
+        "caution": "Avoid long-term use on face or thin skin without advice."
+      },
+      {
+        "name": "Cetirizine (oral antihistamine)",
+        "type": "Oral",
+        "usage_note": "May help with itch-related sleep disturbance.",
+        "prescription_required": false,
+        "caution": "Can cause drowsiness; check dosing for children."
+      }
+    ]
+  },
+  "psoriasis": {
+    "display_name": "Psoriasis",
+    "overview": "Psoriasis is an immune-related condition that speeds up skin cell turnover, causing thick, scaly plaques, often on elbows, knees, scalp and lower back.",
+    "symptoms": [
+      "Raised, thickened patches with silvery scales",
+      "Itching or burning",
+      "Cracked skin that may bleed",
+      "Pitted or thickened nails"
+    ],
+    "precautions": [
+      "Keep skin moisturised",
+      "Avoid skin injury and harsh scrubbing",
+      "Limit alcohol and stop smoking",
+      "Get modest sun exposure as advised by a doctor"
+    ],
+    "when_to_see_doctor": "See a dermatologist for diagnosis and long-term management, or if joints become painful or swollen.",
+    "medicines": [
+      {
+        "name": "Coal tar or salicylic acid preparations",
+        "type": "Topical",
+        "usage_note": "Help soften and lift scales.",
+        "prescription_required": false,
+        "caution": "May irritate; tar can stain."
+      },
+      {
+        "name": "Topical corticosteroids (e.g. betamethasone)",
+        "type": "Topical",
+        "usage_note": "Used for plaques in short courses.",
+        "prescription_required": true,
+        "caution": "Potency must match the body area; avoid prolonged use."
+      },
+      {
+        "name": "Calcipotriol (vitamin D analogue)",
+        "type": "Topical",
+        "usage_note": "Often combined with steroids.",
+        "prescription_required": true,
+        "caution": "Avoid face and skin folds unless advised."
+      }
+    ]
+  },
+  "rosacea": {
+    "display_name": "Rosacea",
+    "overview": "Rosacea is a chronic condition causing facial redness, visible blood vessels and sometimes acne-like bumps, usually on the cheeks, nose and forehead.",
+    "symptoms": [
+      "Persistent facial redness or flushing",
+      "Visible small blood vessels",
+      "Bumps or pimples",
+      "Burning or stinging sensation"
+    ],
+    "precautions": [
+      "Use broad-spectrum sunscreen daily",
+      "Avoid triggers such as spicy food, alcohol and heat",
+      "Use gentle skincare without alcohol or menthol"
+    ],
+    "when_to_see_doctor": "See a dermatologist if redness is persistent, eyes are irritated, or the nose thickens.",
+    "medicines": [
+      {
+        "name": "Metronidazole 0.75% gel",
+        "type": "Topical",
+        "usage_note": "Reduces inflammatory bumps.",
+        "prescription_required": true,
+        "caution": "Results usually take several weeks."
+      },
+      {
+        "name": "Azelaic acid 15–20%",
+        "type": "Topical",
+        "usage_note": "Helps bumps and redness.",
+        "prescription_required": false,
+        "caution": "May sting initially."
+      },
+      {
+        "name": "Broad-spectrum sunscreen SPF 30+",
+        "type": "Topical",
+        "usage_note": "Daily protection reduces flares.",
+        "prescription_required": false,
+        "caution": "Prefer mineral (zinc/titanium) formulas for sensitive skin."
+      }
+    ]
+  },
+  "melasma": {
+    "display_name": "Melasma",
+    "overview": "Melasma causes brown or grey-brown patches, mainly on the face. It is linked to sun exposure, hormones (pregnancy, contraceptives) and genetics.",
+    "symptoms": [
+      "Symmetrical brown patches on cheeks, forehead or upper lip",
+      "No itching or pain",
+      "Darkening after sun exposure"
+    ],
+    "precautions": [
+      "Strict daily sunscreen and shade",
+      "Avoid harsh bleaching creams of unknown content",
+      "Discuss hormonal medicines with a doctor"
+    ],
+    "when_to_see_doctor": "See a dermatologist to confirm the diagnosis and before using lightening agents.",
+    "medicines": [
+      {
+        "name": "Broad-spectrum tinted sunscreen SPF 50",
+        "type": "Topical",
+        "usage_note": "Cornerstone of treatment; reapply every 2–3 hours outdoors.",
+        "prescription_required": false,
+        "caution": "Iron-oxide tinted formulas block visible light too."
+      },
+      {
+        "name": "Azelaic acid 20%",
+        "type": "Topical",
+        "usage_note": "Gentle lightening agent.",
+        "prescription_required": false,
+        "caution": "May cause mild irritation."
+      },
+      {
+        "name": "Hydroquinone 2–4%",
+        "type": "Topical",
+        "usage_note": "Short supervised courses only.",
+        "prescription_required": true,
+        "caution": "Avoid unsupervised or long-term use; risk of ochronosis."
+      }
+    ]
+  },
+  "tinea": {
+    "display_name": "Tinea (Fungal skin infection)",
+    "overview": "Tinea (ringworm) is a fungal infection causing ring-shaped, itchy, scaly patches. It is common in hot, humid climates and spreads through contact and shared items.",
+    "symptoms": [
+      "Ring-shaped red patch with clearer centre",
+      "Itching",
+      "Scaly or raised border",
+      "Patches in groin, feet or body folds"
+    ],
+    "precautions": [
+      "Keep skin clean and dry",
+      "Do not share towels or clothes",
+      "Wear loose cotton clothing",
+      "Avoid steroid creams unless prescribed"
+    ],
+    "when_to_see_doctor": "See a doctor if it spreads widely, affects scalp or nails, or does not improve after 2 weeks.",
+    "medicines": [
+      {
+        "name": "Clotrimazole 1% cream",
+        "type": "Topical",
+        "usage_note": "Usually applied twice daily and continued 1–2 weeks after clearing.",
+        "prescription_required": false,
+        "caution": "Stopping early can cause recurrence."
+      },
+      {
+        "name": "Terbinafine 1% cream",
+        "type": "Topical",
+        "usage_note": "Often effective in shorter courses.",
+        "prescription_required": false,
+        "caution": "Avoid combination steroid-antifungal creams without advice."
+      },
+      {
+        "name": "Oral antifungals (e.g. terbinafine, itraconazole)",
+        "type": "Oral",
+        "usage_note": "For extensive or resistant infection.",
+        "prescription_required": true,
+        "caution": "Need medical assessment; may affect liver."
+      }
+    ]
+  },
+  "vitiligo": {
+    "display_name": "Vitiligo",
+    "overview": "Vitiligo is a condition in which pigment-producing cells are lost, leaving smooth white patches. It is not contagious and its course varies between people.",
+    "symptoms": [
+      "Milky-white patches",
+      "Premature whitening of hair in affected areas",
+      "Often symmetrical patches"
+    ],
+    "precautions": [
+      "Protect white patches from sunburn",
+      "Avoid skin injury which can trigger new patches",
+      "Seek emotional support if needed"
+    ],
+    "when_to_see_doctor": "See a dermatologist for confirmation and to discuss treatment options early.",
+    "medicines": [
+      {
+        "name": "Broad-spectrum sunscreen SPF 50",
+        "type": "Topical",
+        "usage_note": "Protects depigmented skin.",
+        "prescription_required": false,
+        "caution": "Reapply regularly."
+      },
+      {
+        "name": "Topical corticosteroids",
+        "type": "Topical",
+        "usage_note": "May help repigmentation in limited patches.",
+        "prescription_required": true,
+        "caution": "Requires supervision to avoid thinning."
+      },
+      {
+        "name": "Tacrolimus 0.1% ointment",
+        "type": "Topical",
+        "usage_note": "Often used for face and neck.",
+        "prescription_required": true,
+        "caution": "May cause burning sensation initially."
+      }
+    ]
+  },
+  "warts": {
+    "display_name": "Warts",
+    "overview": "Warts are small, rough growths caused by human papillomavirus (HPV). They are common on hands and feet and can spread by contact.",
+    "symptoms": [
+      "Small rough bumps",
+      "Tiny black dots (clotted vessels)",
+      "Pain when walking for plantar warts"
+    ],
+    "precautions": [
+      "Avoid picking or shaving over warts",
+      "Keep feet dry and wear sandals in shared showers",
+      "Do not share towels"
+    ],
+    "when_to_see_doctor": "See a doctor for warts on the face or genitals, if they bleed, change, or if you have diabetes or low immunity.",
+    "medicines": [
+      {
+        "name": "Salicylic acid 17% solution/plaster",
+        "type": "Topical",
+        "usage_note": "Applied daily after soaking and gently filing.",
+        "prescription_required": false,
+        "caution": "Avoid healthy skin; not for face."
+      },
+      {
+        "name": "Cryotherapy (clinic procedure)",
+        "type": "Procedure",
+        "usage_note": "Freezing performed by a clinician.",
+        "prescription_required": true,
+        "caution": "May blister; several sessions may be needed."
+      }
+    ]
+  },
+  "urticaria": {
+    "display_name": "Urticaria (Hives)",
+    "overview": "Urticaria causes raised, itchy welts that appear and fade, often within hours. Triggers include foods, medicines, infections, heat or pressure.",
+    "symptoms": [
+      "Raised itchy welts",
+      "Welts that change shape or move",
+      "Swelling of lips or eyelids (angioedema)"
+    ],
+    "precautions": [
+      "Identify and avoid triggers",
+      "Wear loose clothing",
+      "Use cool compresses for itch"
+    ],
+    "when_to_see_doctor": "Seek urgent care for swelling of the tongue or throat, difficulty breathing, or dizziness.",
+    "medicines": [
+      {
+        "name": "Cetirizine or loratadine (non-sedating antihistamine)",
+        "type": "Oral",
+        "usage_note": "Commonly used daily during episodes.",
+        "prescription_required": false,
+        "caution": "Check dose for children and in pregnancy."
+      },
+      {
+        "name": "Calamine lotion",
+        "type": "Topical",
+        "usage_note": "Soothes itch.",
+        "prescription_required": false,
+        "caution": "For symptom relief only."
+      }
+    ]
+  },
+  "seborrheic_dermatitis": {
+    "display_name": "Seborrheic dermatitis",
+    "overview": "Seborrheic dermatitis causes flaky, greasy scales and redness on oily areas such as the scalp (dandruff), eyebrows, sides of the nose and chest.",
+    "symptoms": [
+      "Flaking (dandruff)",
+      "Greasy yellowish scales",
+      "Redness",
+      "Mild itching"
+    ],
+    "precautions": [
+      "Wash regularly with medicated shampoo",
+      "Avoid heavy oils on affected areas",
+      "Manage stress and sleep"
+    ],
+    "when_to_see_doctor": "See a doctor if it spreads, is very red or painful, or does not respond to shampoos.",
+    "medicines": [
+      {
+        "name": "Ketoconazole 2% shampoo",
+        "type": "Topical",
+        "usage_note": "Lathered and left for a few minutes, two to three times weekly.",
+        "prescription_required": false,
+        "caution": "Avoid contact with eyes."
+      },
+      {
+        "name": "Zinc pyrithione or selenium sulfide shampoo",
+        "type": "Topical",
+        "usage_note": "Maintenance use.",
+        "prescription_required": false,
+        "caution": "May dry hair."
+      }
+    ]
+  },
+  "scabies": {
+    "display_name": "Scabies",
+    "overview": "Scabies is a contagious infestation by tiny mites that burrow into the skin, causing intense itching that is often worse at night.",
+    "symptoms": [
+      "Intense itching, worse at night",
+      "Small bumps or burrow lines",
+      "Rash between fingers, wrists, waist"
+    ],
+    "precautions": [
+      "Treat all household contacts at the same time",
+      "Wash bedding and clothes in hot water",
+      "Avoid close contact until treated"
+    ],
+    "when_to_see_doctor": "See a doctor to confirm diagnosis and get treatment for the whole household.",
+    "medicines": [
+      {
+        "name": "Permethrin 5% cream",
+        "type": "Topical",
+        "usage_note": "Applied neck-down and washed off after 8–14 hours; often repeated after 1 week.",
+        "prescription_required": false,
+        "caution": "All contacts must be treated simultaneously."
+      },
+      {
+        "name": "Oral ivermectin",
+        "type": "Oral",
+        "usage_note": "Used in specific cases.",
+        "prescription_required": true,
+        "caution": "Not for young children or pregnancy without advice."
+      }
+    ]
+  },
+  "impetigo": {
+    "display_name": "Impetigo",
+    "overview": "Impetigo is a contagious bacterial skin infection, common in children, producing red sores that burst and form honey-coloured crusts.",
+    "symptoms": [
+      "Red sores around nose and mouth",
+      "Honey-coloured crusts",
+      "Itching"
+    ],
+    "precautions": [
+      "Keep sores clean and covered",
+      "Avoid touching or scratching",
+      "Do not share towels; wash hands often"
+    ],
+    "when_to_see_doctor": "See a doctor promptly; antibiotics are usually needed, especially if widespread or with fever.",
+    "medicines": [
+      {
+        "name": "Fusidic acid 2% or mupirocin 2% cream",
+        "type": "Topical",
+        "usage_note": "Used for limited areas.",
+        "prescription_required": true,
+        "caution": "Complete the full course."
+      },
+      {
+        "name": "Oral antibiotics",
+        "type": "Oral",
+        "usage_note": "For widespread infection.",
+        "prescription_required": true,
+        "caution": "Only as prescribed."
+      }
+    ]
+  },
+  "pigmentation_disorder": {
+    "display_name": "Pigmentation disorder",
+    "overview": "Pigmentation disorders change skin colour, causing lighter patches (such as vitiligo) or darker patches (such as melasma or post-inflammatory hyperpigmentation). Sun exposure, hormones, inflammation and genetics can all play a role.",
+    "symptoms": [
+      "Lighter or darker patches of skin",
+      "Patches that change with sun exposure",
+      "Usually no itching or pain"
+    ],
+    "precautions": [
+      "Use broad-spectrum sunscreen daily",
+      "Avoid bleaching creams of unknown content",
+      "Do not pick or irritate the area",
+      "Note any changes in size or colour"
+    ],
+    "when_to_see_doctor": "See a dermatologist to identify the exact type, especially if patches spread quickly or a mole-like spot changes shape or colour.",
+    "medicines": [
+      {
+        "name": "Broad-spectrum sunscreen SPF 50",
+        "type": "Topical",
+        "usage_note": "Daily protection prevents darkening and sunburn of light patches.",
+        "prescription_required": false,
+        "caution": "Reapply every 2–3 hours outdoors."
+      },
+      {
+        "name": "Azelaic acid 15–20%",
+        "type": "Topical",
+        "usage_note": "Gentle option for darker patches.",
+        "prescription_required": false,
+        "caution": "May sting at first."
+      },
+      {
+        "name": "Topical corticosteroid or tacrolimus",
+        "type": "Topical",
+        "usage_note": "Sometimes used for vitiligo patches.",
+        "prescription_required": true,
+        "caution": "Only under dermatologist supervision."
+      }
+    ]
+  },
+  "contact_dermatitis": {
+    "display_name": "Contact dermatitis",
+    "overview": "Contact dermatitis is a red, itchy rash caused by something that touches the skin — an irritant (soaps, detergents, chemicals) or an allergen (nickel, fragrances, hair dye, plants).",
+    "symptoms": [
+      "Red, itchy rash where the skin touched the trigger",
+      "Dry, cracked or scaly skin",
+      "Blisters or oozing in stronger reactions",
+      "Burning or tenderness"
+    ],
+    "precautions": [
+      "Identify and avoid the trigger",
+      "Wash the area with mild soap and water",
+      "Use fragrance-free moisturisers",
+      "Wear gloves when handling chemicals"
+    ],
+    "when_to_see_doctor": "See a doctor if the rash is widespread, on the face or genitals, shows signs of infection, or doesn't improve within 2 weeks.",
+    "medicines": [
+      {
+        "name": "Hydrocortisone 1% cream",
+        "type": "Topical",
+        "usage_note": "Short course for mild inflammation.",
+        "prescription_required": false,
+        "caution": "Avoid prolonged use on the face."
+      },
+      {
+        "name": "Calamine lotion or cool compresses",
+        "type": "Topical",
+        "usage_note": "Soothes itching.",
+        "prescription_required": false,
+        "caution": "Symptom relief only."
+      },
+      {
+        "name": "Oral antihistamine (e.g. cetirizine)",
+        "type": "Oral",
+        "usage_note": "May reduce itch.",
+        "prescription_required": false,
+        "caution": "Can cause drowsiness."
+      }
+    ]
+  }
+}
