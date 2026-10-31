@@ -20,3 +20,5 @@ ml/checkpoint*.pt
 # Never commit secrets
 *.env
 !.env.example
+# Built app files (APKs are large; share them via GitHub Releases instead)
+release/

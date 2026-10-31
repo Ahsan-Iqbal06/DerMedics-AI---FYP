@@ -69,6 +69,8 @@ Sample providers live in `backend/app/data/seed_dermatologists.json`. Results ar
 
 ## 2. Mobile app
 
+> **Android phones:** install the ready-made APK from `release/android/`; see [ANDROID.md](ANDROID.md).
+>
 > **iPhone:** see [IPHONE.md](IPHONE.md). It covers using the app in Safari over Wi-Fi today, or building the real iPhone app in the cloud and installing it from Windows.
 
 ```bash
