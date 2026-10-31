@@ -53,6 +53,7 @@ class OpenAICompatibleProvider:
 
         self.client = OpenAI(base_url=base_url, api_key=api_key, timeout=30, max_retries=0)
         self.models = [model, *(fallback_models or [])]
+        self.extra_body = _no_thinking(base_url) if get_settings().llm_disable_reasoning else None
         self.fallback = KnowledgeBaseProvider()
 
     def _ask_json(self, prompt: str) -> dict:
@@ -64,6 +65,7 @@ class OpenAICompatibleProvider:
                     model=model,
                     temperature=0.2,
                     response_format={"type": "json_object"},
+                    extra_body=self.extra_body,
                     messages=[{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
                 )
                 text = (resp.choices[0].message.content or "").strip()
@@ -108,6 +110,15 @@ class OpenAICompatibleProvider:
         except Exception:
             log.exception("LLM medicine suggestion failed; using knowledge base")
             return self.fallback.medicines(label, description, region)
+
+
+def _no_thinking(base_url: str) -> dict | None:
+    """Turn off "thinking" for reasoning models (e.g. Qwen 3): same answers here, ~8x faster and far fewer tokens."""
+    if "openrouter.ai" in base_url:
+        return {"reasoning": {"enabled": False}}
+    if "aliyuncs.com" in base_url:  # Alibaba Model Studio / DashScope
+        return {"enable_thinking": False}
+    return None
 
 
 @lru_cache

@@ -4,12 +4,12 @@ Ready-made, signed release APKs are in **`release/android/`**:
 
 | File | Use it for | Size |
 |---|---|---|
-| `DerMedicsAI-v1.0.0-universal.apk` | **Any Android phone. Pick this if unsure.** | 54 MB |
-| `DerMedicsAI-v1.0.0-arm64.apk` | Most phones from about 2017 onwards (smaller download) | 19 MB |
-| `DerMedicsAI-v1.0.0-armv7.apk` | Older or budget 32-bit phones | 17 MB |
-| `DerMedicsAI-v1.0.0-x86_64.apk` | Android emulators on a PC | 20 MB |
+| `DerMedicsAI-v1.0.1-universal.apk` | **Any Android phone** | 54 MB |
 
-Requires Android 7.0 or newer. All four APKs are signed with the DerMedics release key, so later versions install as updates.
+Requires Android 7.0 or newer. Signed with the DerMedics release key, so it installs as an update over 1.0.0 and your
+account stays signed in. Smaller per-processor APKs can be built with `--split-per-abi` (see *Rebuilding* below).
+
+**New in 1.0.1:** Forgot password (reset with a 6-digit code emailed to you) and a new app icon (your logo on soft lavender).
 
 ---
 
@@ -18,7 +18,7 @@ Requires Android 7.0 or newer. All four APKs are signed with the DerMedics relea
 1. Copy the APK to the phone using any of these:
    - **USB cable:** drag it into the phone's *Download* folder.
    - **Google Drive** or **WhatsApp**: send the file to yourself.
-   - **adb:** `adb install release/android/DerMedicsAI-v1.0.0-universal.apk`.
+   - **adb:** `adb install release/android/DerMedicsAI-v1.0.1-universal.apk`.
 2. On the phone, open the APK with **Files** or **Downloads**.
 3. If Android warns about unknown apps, tap **Settings → Allow from this source**, then go back and tap **Install**.
 4. If **Play Protect** shows "unrecognised app", tap **More details → Install anyway**. This is normal for apps not from the Play Store.

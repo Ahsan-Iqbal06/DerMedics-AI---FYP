@@ -1,3 +1,5 @@
+import hmac
+import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
 
@@ -11,23 +13,33 @@ from app.core.security import (
     DUMMY_HASH,
     auth_rate_limiter,
     create_access_token,
+    create_reset_token,
+    decode_reset_token,
     hash_password,
     hash_refresh_token,
     new_refresh_token,
+    reset_code_hash,
+    reset_rate_limiter,
     verify_password,
 )
 from app.db.session import get_db
-from app.models import RefreshToken, User
+from app.models import PasswordReset, RefreshToken, User
 from app.schemas import (
     ChangePasswordIn,
+    ForgotPasswordIn,
     LoginIn,
+    MessageOut,
     RefreshIn,
     RegisterIn,
+    ResetPasswordIn,
+    ResetTokenOut,
     TokenOut,
     UserOut,
     UserUpdate,
+    VerifyResetCodeIn,
 )
 from app.services.classifier import InvalidImageError, load_image
+from app.services.email import send_reset_code
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -167,6 +179,93 @@ def delete_avatar(user: User = Depends(get_current_user), db: Session = Depends(
     db.commit()
     db.refresh(user)
     return user
+
+
+# ---------- Forgot password: email code -> verify -> new password ----------
+
+RESET_MAX_ATTEMPTS = 5
+RESET_RESEND_SECONDS = 60
+GENERIC_RESET_MESSAGE = "If an account exists for this email, we've sent a 6-digit code to it."
+
+
+def _aware(dt: datetime) -> datetime:
+    return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
+
+
+@router.post("/forgot-password", response_model=MessageOut, status_code=202, dependencies=[Depends(reset_rate_limiter)])
+def forgot_password(body: ForgotPasswordIn, db: Session = Depends(get_db)):
+    """Emails a one-time code. Always answers the same way, so it can't be used to discover accounts."""
+    s = get_settings()
+    user = db.scalar(select(User).where(User.email == body.email))
+    if user is None or not user.is_active:
+        return MessageOut(message=GENERIC_RESET_MESSAGE)
+    latest = db.scalar(
+        select(PasswordReset).where(PasswordReset.user_id == user.id).order_by(PasswordReset.id.desc())
+    )
+    if latest and not latest.consumed and datetime.now(UTC) - _aware(latest.created_at) < timedelta(seconds=RESET_RESEND_SECONDS):
+        return MessageOut(message=GENERIC_RESET_MESSAGE)  # a code was sent moments ago
+    # Only the newest code is valid.
+    db.execute(update(PasswordReset).where(PasswordReset.user_id == user.id, PasswordReset.consumed.is_(False))
+               .values(consumed=True))
+    code = f"{secrets.randbelow(1_000_000):06d}"
+    db.add(PasswordReset(
+        user_id=user.id,
+        code_hash=reset_code_hash(user.id, code),
+        expires_at=datetime.now(UTC) + timedelta(minutes=s.password_reset_minutes),
+        created_at=datetime.now(UTC),
+    ))
+    db.commit()
+    send_reset_code(user.email, user.full_name.split(" ")[0], code, s.password_reset_minutes)
+    return MessageOut(message=GENERIC_RESET_MESSAGE)
+
+
+@router.post("/verify-reset-code", response_model=ResetTokenOut, dependencies=[Depends(reset_rate_limiter)])
+def verify_reset_code(body: VerifyResetCodeIn, db: Session = Depends(get_db)):
+    invalid = HTTPException(status.HTTP_400_BAD_REQUEST, "That code is invalid or has expired. Request a new one.")
+    user = db.scalar(select(User).where(User.email == body.email))
+    if user is None:
+        raise invalid
+    reset = db.scalar(
+        select(PasswordReset)
+        .where(PasswordReset.user_id == user.id, PasswordReset.consumed.is_(False))
+        .order_by(PasswordReset.id.desc())
+    )
+    if reset is None or _aware(reset.expires_at) < datetime.now(UTC):
+        raise invalid
+    if reset.attempts >= RESET_MAX_ATTEMPTS:
+        reset.consumed = True
+        db.commit()
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Too many incorrect attempts. Request a new code.")
+    if not hmac.compare_digest(reset.code_hash, reset_code_hash(user.id, body.code)):
+        reset.attempts += 1
+        left = RESET_MAX_ATTEMPTS - reset.attempts
+        if left == 0:
+            reset.consumed = True
+        db.commit()
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            f"Incorrect code. {left} attempt{'s' if left != 1 else ''} left." if left else
+            "Too many incorrect attempts. Request a new code.",
+        )
+    reset.verified_at = datetime.now(UTC)
+    db.commit()
+    return ResetTokenOut(reset_token=create_reset_token(user.id, reset.id))
+
+
+@router.post("/reset-password", status_code=204, dependencies=[Depends(reset_rate_limiter)])
+def reset_password(body: ResetPasswordIn, db: Session = Depends(get_db)):
+    user_id, reset_id = decode_reset_token(body.reset_token)
+    reset = db.get(PasswordReset, reset_id)
+    if reset is None or reset.user_id != user_id or reset.consumed or reset.verified_at is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "This reset has already been used. Request a new code.")
+    user = db.get(User, user_id)
+    if user is None or not user.is_active:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Account not found or disabled")
+    user.password_hash = hash_password(body.new_password)
+    reset.consumed = True
+    # Sign out everywhere: whoever knew the old password loses access.
+    db.execute(update(RefreshToken).where(RefreshToken.user_id == user.id).values(revoked=True))
+    db.commit()
 
 
 @router.post("/change-password", status_code=204)

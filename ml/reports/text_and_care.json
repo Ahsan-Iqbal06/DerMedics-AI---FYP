@@ -1,0 +1,391 @@
+{
+  "llm": {
+    "conditions": 14,
+    "structured_rate": 1.0,
+    "first_line_rate": 1.0,
+    "mean_precision": 0.917,
+    "no_dosing_rate": 1.0,
+    "mean_seconds": 7.9,
+    "rows": [
+      {
+        "condition": "acne",
+        "seconds": 9.9,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.75,
+        "no_dosing": true,
+        "medicines": [
+          "Benzoyl Peroxide",
+          "Salicylic Acid",
+          "Adapalene",
+          "Doxycycline"
+        ]
+      },
+      {
+        "condition": "eczema",
+        "seconds": 7.3,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.67,
+        "no_dosing": true,
+        "medicines": [
+          "Emollients (e.g., White Soft Paraffin, Glycerin-based creams)",
+          "Cetirizine",
+          "Hydrocortisone 1% cream"
+        ]
+      },
+      {
+        "condition": "psoriasis",
+        "seconds": 7.2,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Salicylic Acid",
+          "Coal Tar",
+          "Betamethasone Valerate"
+        ]
+      },
+      {
+        "condition": "rosacea",
+        "seconds": 7.3,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Metronidazole",
+          "Azelaic Acid",
+          "Ivermectin"
+        ]
+      },
+      {
+        "condition": "melasma",
+        "seconds": 8.1,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Hydroquinone",
+          "Azelaic Acid",
+          "Broad-Spectrum Sunscreen"
+        ]
+      },
+      {
+        "condition": "tinea",
+        "seconds": 7.3,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Clotrimazole",
+          "Terbinafine",
+          "Ketoconazole",
+          "Itraconazole"
+        ]
+      },
+      {
+        "condition": "vitiligo",
+        "seconds": 6.5,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Clobetasol propionate",
+          "Tacrolimus ointment",
+          "Broad-spectrum sunscreen"
+        ]
+      },
+      {
+        "condition": "warts",
+        "seconds": 7.8,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Salicylic Acid",
+          "Imiquimod",
+          "Cryotherapy (Liquid Nitrogen)"
+        ]
+      },
+      {
+        "condition": "urticaria",
+        "seconds": 6.9,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.67,
+        "no_dosing": true,
+        "medicines": [
+          "Cetirizine",
+          "Loratadine",
+          "Calamine Lotion"
+        ]
+      },
+      {
+        "condition": "seborrheic_dermatitis",
+        "seconds": 10.2,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Ketoconazole (Shampoo or Cream)",
+          "Zinc Pyrithione (Shampoo)",
+          "Hydrocortisone (Low-potency Cream)",
+          "Ciclopirox Olamine (Cream or Shampoo)"
+        ]
+      },
+      {
+        "condition": "scabies",
+        "seconds": 7.6,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Permethrin",
+          "Benzyl Benzoate",
+          "Ivermectin"
+        ]
+      },
+      {
+        "condition": "impetigo",
+        "seconds": 8.5,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.75,
+        "no_dosing": true,
+        "medicines": [
+          "Mupirocin",
+          "Fusidic Acid",
+          "Cephalexin",
+          "Chlorhexidine Cleanser"
+        ]
+      },
+      {
+        "condition": "pigmentation_disorder",
+        "seconds": 8.1,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Hydroquinone",
+          "Azelaic Acid",
+          "Broad-Spectrum Sunscreen (SPF 30+)"
+        ]
+      },
+      {
+        "condition": "contact_dermatitis",
+        "seconds": 7.9,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Calamine lotion",
+          "Hydrocortisone cream",
+          "Cetirizine",
+          "Betamethasone valerate cream"
+        ]
+      }
+    ]
+  },
+  "knowledge_base": {
+    "conditions": 14,
+    "structured_rate": 1.0,
+    "first_line_rate": 1.0,
+    "mean_precision": 0.941,
+    "no_dosing_rate": 1.0,
+    "mean_seconds": 0.0,
+    "rows": [
+      {
+        "condition": "acne",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Benzoyl peroxide 2.5\u20135% gel",
+          "Adapalene 0.1% gel (topical retinoid)",
+          "Clindamycin 1% gel (topical antibiotic)"
+        ]
+      },
+      {
+        "condition": "eczema",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.67,
+        "no_dosing": true,
+        "medicines": [
+          "Emollient / fragrance-free moisturiser",
+          "Hydrocortisone 1% cream (mild steroid)",
+          "Cetirizine (oral antihistamine)"
+        ]
+      },
+      {
+        "condition": "psoriasis",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Coal tar or salicylic acid preparations",
+          "Topical corticosteroids (e.g. betamethasone)",
+          "Calcipotriol (vitamin D analogue)"
+        ]
+      },
+      {
+        "condition": "rosacea",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Metronidazole 0.75% gel",
+          "Azelaic acid 15\u201320%",
+          "Broad-spectrum sunscreen SPF 30+"
+        ]
+      },
+      {
+        "condition": "melasma",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Broad-spectrum tinted sunscreen SPF 50",
+          "Azelaic acid 20%",
+          "Hydroquinone 2\u20134%"
+        ]
+      },
+      {
+        "condition": "tinea",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Clotrimazole 1% cream",
+          "Terbinafine 1% cream",
+          "Oral antifungals (e.g. terbinafine, itraconazole)"
+        ]
+      },
+      {
+        "condition": "vitiligo",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Broad-spectrum sunscreen SPF 50",
+          "Topical corticosteroids",
+          "Tacrolimus 0.1% ointment"
+        ]
+      },
+      {
+        "condition": "warts",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Salicylic acid 17% solution/plaster",
+          "Cryotherapy (clinic procedure)"
+        ]
+      },
+      {
+        "condition": "urticaria",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 0.5,
+        "no_dosing": true,
+        "medicines": [
+          "Cetirizine or loratadine (non-sedating antihistamine)",
+          "Calamine lotion"
+        ]
+      },
+      {
+        "condition": "seborrheic_dermatitis",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Ketoconazole 2% shampoo",
+          "Zinc pyrithione or selenium sulfide shampoo"
+        ]
+      },
+      {
+        "condition": "scabies",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Permethrin 5% cream",
+          "Oral ivermectin"
+        ]
+      },
+      {
+        "condition": "impetigo",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Fusidic acid 2% or mupirocin 2% cream",
+          "Oral antibiotics"
+        ]
+      },
+      {
+        "condition": "pigmentation_disorder",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Broad-spectrum sunscreen SPF 50",
+          "Azelaic acid 15\u201320%",
+          "Topical corticosteroid or tacrolimus"
+        ]
+      },
+      {
+        "condition": "contact_dermatitis",
+        "seconds": 0.0,
+        "structured": true,
+        "first_line": true,
+        "precision": 1.0,
+        "no_dosing": true,
+        "medicines": [
+          "Hydrocortisone 1% cream",
+          "Calamine lotion or cool compresses",
+          "Oral antihistamine (e.g. cetirizine)"
+        ]
+      }
+    ]
+  },
+  "recommender": {
+    "city_condition_cases": 43,
+    "top1_correct": 1.0,
+    "nearest_by_location_correct": 1.0
+  }
+}

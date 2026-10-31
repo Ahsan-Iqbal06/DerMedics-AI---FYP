@@ -59,6 +59,26 @@ class DerMedicsRepository {
         _auth,
       );
 
+  Future<void> forgotPassword(String email) => api.call(
+        (dio) => dio.post('/auth/forgot-password', data: {'email': email}, options: ApiClient.noAuth),
+        (_) {},
+      );
+
+  /// Returns a short-lived token that allows setting a new password.
+  Future<String> verifyResetCode(String email, String code) => api.call(
+        (dio) => dio.post('/auth/verify-reset-code', data: {'email': email, 'code': code}, options: ApiClient.noAuth),
+        (d) => d['reset_token'] as String,
+      );
+
+  Future<void> resetPassword(String resetToken, String newPassword, String confirmPassword) => api.call(
+        (dio) => dio.post(
+          '/auth/reset-password',
+          data: {'reset_token': resetToken, 'new_password': newPassword, 'confirm_password': confirmPassword},
+          options: ApiClient.noAuth,
+        ),
+        (_) {},
+      );
+
   Future<void> logout(String refreshToken) => api.call(
         (dio) => dio.post('/auth/logout', data: {'refresh_token': refreshToken}, options: ApiClient.noAuth),
         (_) {},

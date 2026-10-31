@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import re
 import secrets
 import time
@@ -103,3 +104,29 @@ class RateLimiter:
 
 
 auth_rate_limiter = RateLimiter(max_calls=5, per_seconds=60)
+# Covers forgot + verify + reset together; wrong codes are separately capped at 5 per code.
+reset_rate_limiter = RateLimiter(max_calls=10, per_seconds=60)
+
+
+def reset_code_hash(user_id: int, code: str) -> str:
+    """Keyed hash of a reset code, so a leaked database can't be brute-forced offline."""
+    s = get_settings()
+    return hmac.new(s.jwt_secret.encode(), f"{user_id}:{code}".encode(), hashlib.sha256).hexdigest()
+
+
+def create_reset_token(user_id: int, reset_id: int) -> str:
+    s = get_settings()
+    now = datetime.now(UTC)
+    payload = {"sub": str(user_id), "rid": reset_id, "type": "reset", "iat": now, "exp": now + timedelta(minutes=10)}
+    return jwt.encode(payload, s.jwt_secret, algorithm=s.jwt_algorithm)
+
+
+def decode_reset_token(token: str) -> tuple[int, int]:
+    s = get_settings()
+    try:
+        payload = jwt.decode(token, s.jwt_secret, algorithms=[s.jwt_algorithm])
+    except jwt.PyJWTError:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "This reset link has expired. Please request a new code.")
+    if payload.get("type") != "reset":
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Invalid reset token")
+    return int(payload["sub"]), int(payload["rid"])

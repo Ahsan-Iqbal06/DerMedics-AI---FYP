@@ -1,0 +1,10 @@
+mendeley_yj3md44hxg SkinDisNet_2.zip https://data.mendeley.com/public-files/datasets/yj3md44hxg/files/2e67c136-67c5-41c0-ae7b-298d601c447d/file_downloaded sha256 7367d2d63d3df9dfafd8f09529c078cfb758ad314760865982f632fe356f7428
+mendeley_yj3md44hxg SkinDisNet.zip https://data.mendeley.com/public-files/datasets/yj3md44hxg/files/ec865f3f-59d9-47b8-b715-4fe11edd3c83/file_downloaded sha256 dc51a058a1a001418a2413367fa19078058b19a9aa667e5b41b4f936967c3e90
+mendeley_r7kdbj2wym DataSet3-20250719T111127Z-1-001.zip https://data.mendeley.com/public-files/datasets/r7kdbj2wym/files/dedc9f73-0afb-44b4-973d-aa38fdef447e/file_downloaded sha256 2501baae29b3cc8c245aa639c2c3613929af3a133aa2679a525e61c51bb1e6a0
+mendeley_6sjcrtg54p Dataset.zip https://data.mendeley.com/public-files/datasets/6sjcrtg54p/files/02a95bf6-1796-4a89-ba19-d398bcd2319d/file_downloaded sha256 8afaffda49f36b6fe2fc59652871ef661e8fd462c4895eba92a56b364d5dffb1
+mendeley_3hckgznc67 acne.zip https://data.mendeley.com/public-files/datasets/3hckgznc67/files/d91dcc46-3832-4757-b165-b81c7028a41e/file_downloaded sha256 7884b3835f04f46f65575d86414c260c829ae915e0d20eac58076259cb4733ac
+ham10000 HAM10000_images_part_1.zip https://dataverse.harvard.edu/api/access/datafile/3172585?format=original - -
+ham10000 HAM10000_images_part_2.zip https://dataverse.harvard.edu/api/access/datafile/3172584?format=original - -
+ham10000 HAM10000_metadata.tab https://dataverse.harvard.edu/api/access/datafile/4338392?format=original - -
+ham10000 ISIC2018_Task3_Test_Images.zip https://dataverse.harvard.edu/api/access/datafile/3855824?format=original - -
+ham10000 ISIC2018_Task3_Test_GroundTruth.tab https://dataverse.harvard.edu/api/access/datafile/6924466?format=original - -

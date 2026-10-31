@@ -88,6 +88,48 @@ class ChangePasswordIn(BaseModel):
         return v
 
 
+class ForgotPasswordIn(BaseModel):
+    email: EmailStr
+
+    @field_validator("email")
+    @classmethod
+    def lower_email(cls, v: str) -> str:
+        return v.lower()
+
+
+class VerifyResetCodeIn(ForgotPasswordIn):
+    code: str = Field(pattern=r"^\d{6}$", description="6-digit code from the email")
+
+
+class ResetTokenOut(BaseModel):
+    reset_token: str
+    expires_in: int = 600
+
+
+class ResetPasswordIn(BaseModel):
+    reset_token: str
+    new_password: str = Field(max_length=128)
+    confirm_password: str
+
+    @field_validator("new_password")
+    @classmethod
+    def strong_password(cls, v: str) -> str:
+        problems = password_problems(v)
+        if problems:
+            raise ValueError("Password must contain " + ", ".join(problems))
+        return v
+
+    @model_validator(mode="after")
+    def check(self):
+        if self.new_password != self.confirm_password:
+            raise ValueError("Passwords do not match")
+        return self
+
+
+class MessageOut(BaseModel):
+    message: str
+
+
 class TokenOut(BaseModel):
     access_token: str
     refresh_token: str

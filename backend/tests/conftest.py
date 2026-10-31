@@ -8,12 +8,13 @@ os.environ["UPLOAD_DIR"] = f"{_tmp}/uploads"
 os.environ["LLM_API_KEY"] = ""
 os.environ["MODEL_PATH"] = ""
 os.environ["GOOGLE_PLACES_KEY"] = ""
+os.environ["SMTP_HOST"] = ""
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 from PIL import Image, ImageDraw  # noqa: E402
 
-from app.core.security import auth_rate_limiter  # noqa: E402
+from app.core.security import auth_rate_limiter, reset_rate_limiter  # noqa: E402
 from app.main import app  # noqa: E402
 from seed import seed  # noqa: E402
 
@@ -25,6 +26,7 @@ PASSWORD = "Str0ng!Pass"
 @pytest.fixture(autouse=True)
 def _reset_limiter():
     auth_rate_limiter.reset()
+    reset_rate_limiter.reset()
 
 
 @pytest.fixture

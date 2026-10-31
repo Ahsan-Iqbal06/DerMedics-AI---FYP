@@ -8,7 +8,10 @@ import 'auth_controller.dart';
 import 'auth_widgets.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.initialEmail});
+
+  /// Pre-filled after a password reset.
+  final String? initialEmail;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -16,7 +19,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _form = GlobalKey<FormState>();
-  final _email = TextEditingController();
+  late final _email = TextEditingController(text: widget.initialEmail ?? '');
   final _password = TextEditingController();
   bool _loading = false;
   String? _error;
@@ -77,7 +80,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onSubmitted: (_) => _submit(),
                   validator: (v) => (v == null || v.isEmpty) ? 'Enter your password' : null,
                 ),
-                SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => context.go(
+                      Uri(path: '/forgot-password', queryParameters: {
+                        if (_email.text.trim().isNotEmpty) 'email': _email.text.trim(),
+                      }).toString(),
+                    ),
+                    child: Text('Forgot password?'),
+                  ),
+                ),
+                SizedBox(height: 8),
                 FilledButton(
                   onPressed: _loading ? null : _submit,
                   child: _loading

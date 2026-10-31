@@ -1,0 +1,62 @@
+{
+  "model": "mobilenet_v3_large-20261025-acc0.57",
+  "test_images": 2535,
+  "condition_images": 2135,
+  "top1_accuracy": 0.6566744730679157,
+  "top3_accuracy": 0.8304449648711943,
+  "per_class_recall": {
+    "acne": 0.776,
+    "contact_dermatitis": 0.923,
+    "eczema": 0.551,
+    "impetigo": 0.849,
+    "pigmentation_disorder": 0.748,
+    "psoriasis": 0.523,
+    "scabies": 0.824,
+    "tinea": 0.597,
+    "urticaria": 0.906,
+    "warts": 0.654
+  },
+  "balanced_accuracy": 0.7351,
+  "selective": [
+    {
+      "threshold": 0.4,
+      "coverage": 0.795,
+      "accuracy_of_shown": 0.764,
+      "unsupported_withheld": 0.608
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.689,
+      "accuracy_of_shown": 0.816,
+      "unsupported_withheld": 0.72
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.587,
+      "accuracy_of_shown": 0.864,
+      "unsupported_withheld": 0.81
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.492,
+      "accuracy_of_shown": 0.898,
+      "unsupported_withheld": 0.875
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.383,
+      "accuracy_of_shown": 0.944,
+      "unsupported_withheld": 0.935
+    }
+  ],
+  "top_confusions": [
+    "eczema -> psoriasis: 43",
+    "eczema -> contact_dermatitis: 31",
+    "eczema -> pigmentation_disorder: 29",
+    "psoriasis -> tinea: 29",
+    "psoriasis -> eczema: 28",
+    "tinea -> psoriasis: 28",
+    "psoriasis -> contact_dermatitis: 25",
+    "psoriasis -> unsupported: 25"
+  ]
+}

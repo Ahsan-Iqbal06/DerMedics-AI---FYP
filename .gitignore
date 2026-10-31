@@ -22,3 +22,7 @@ ml/checkpoint*.pt
 !.env.example
 # Built app files (APKs are large; share them via GitHub Releases instead)
 release/
+ml/raw_*/
+ml/data_v*/
+ml/features/
+ml/*.log

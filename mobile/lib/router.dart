@@ -10,6 +10,7 @@ import 'features/analyze/subject_screen.dart';
 import 'features/analyze/upload_screen.dart';
 import 'features/auth/auth_controller.dart';
 import 'features/auth/login_screen.dart';
+import 'features/auth/forgot_password_screen.dart';
 import 'features/auth/register_screen.dart';
 import 'features/auth/splash_screen.dart';
 import 'features/care/care_screen.dart';
@@ -32,7 +33,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final status = ref.read(authControllerProvider).status;
       final loc = state.matchedLocation;
-      final onAuthPage = loc == '/login' || loc == '/register';
+      final onAuthPage = loc == '/login' || loc == '/register' || loc == '/forgot-password';
       // Remember where the user was heading so a deep link survives the splash/login check.
       final from = state.uri.queryParameters['from'];
       switch (status) {
@@ -48,7 +49,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => SplashScreen()),
-      GoRoute(path: '/login', builder: (_, _) => LoginScreen()),
+      GoRoute(path: '/login', builder: (_, s) => LoginScreen(initialEmail: s.uri.queryParameters['email'])),
+      GoRoute(
+        path: '/forgot-password',
+        builder: (_, s) => ForgotPasswordScreen(initialEmail: s.uri.queryParameters['email']),
+      ),
       GoRoute(path: '/register', builder: (_, _) => RegisterScreen()),
       GoRoute(path: '/profile', parentNavigatorKey: _rootKey, builder: (_, _) => ProfileScreen()),
       StatefulShellRoute.indexedStack(

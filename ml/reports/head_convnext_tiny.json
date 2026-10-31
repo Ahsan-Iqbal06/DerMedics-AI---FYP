@@ -1,0 +1,48 @@
+{
+  "backbone": "convnext_tiny",
+  "head": "mlp1024",
+  "validation": {
+    "condition_images": 1234,
+    "top1_accuracy": 0.705,
+    "top3_accuracy": 0.829,
+    "balanced_accuracy": 0.7054,
+    "per_class_recall": {
+      "acne": 0.819,
+      "contact_dermatitis": 0.649,
+      "eczema": 0.685,
+      "impetigo": 0.5,
+      "pigmentation_disorder": 0.687,
+      "psoriasis": 0.67,
+      "scabies": 0.621,
+      "tinea": 0.738,
+      "urticaria": 0.966,
+      "warts": 0.72
+    },
+    "threshold": 0.45,
+    "coverage": 0.59,
+    "accuracy_of_shown": 0.9038,
+    "unsupported_withheld": 0.8712
+  },
+  "test": {
+    "condition_images": 2135,
+    "top1_accuracy": 0.689,
+    "top3_accuracy": 0.8267,
+    "balanced_accuracy": 0.6608,
+    "per_class_recall": {
+      "acne": 0.936,
+      "contact_dermatitis": 0.6,
+      "eczema": 0.674,
+      "impetigo": 0.479,
+      "pigmentation_disorder": 0.622,
+      "psoriasis": 0.608,
+      "scabies": 0.509,
+      "tinea": 0.692,
+      "urticaria": 0.792,
+      "warts": 0.695
+    },
+    "threshold": 0.45,
+    "coverage": 0.5902,
+    "accuracy_of_shown": 0.8873,
+    "unsupported_withheld": 0.895
+  }
+}

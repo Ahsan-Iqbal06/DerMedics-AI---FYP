@@ -28,8 +28,19 @@ class Settings(BaseSettings):
     llm_model: str = "qwen-plus"
     # Comma-separated models tried in order when the main one fails (e.g. out of credits or rate-limited).
     llm_fallback_models: str = ""
+    # Reasoning models "think" before answering (~20 s per call); off by default for a responsive app.
+    llm_disable_reasoning: bool = True
 
     google_places_key: str = ""
+
+    # Email for password-reset codes. Leave smtp_host empty in development: codes are written to the server log.
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
+    smtp_use_tls: bool = True
+    password_reset_minutes: int = 15
 
     cors_origins: str = "*"
     upload_dir: Path = BASE_DIR / "uploads"

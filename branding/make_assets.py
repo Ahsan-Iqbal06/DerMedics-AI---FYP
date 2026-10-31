@@ -6,9 +6,10 @@ the JPG pixels (grey ~209 and white squares). The checkerboard is removed; the l
 Outputs:
   branding/dermedics_logo.png               transparent logo, full resolution
   mobile/assets/images/logo.png             transparent logo, square, 512px (used in the app)
-  mobile/android/app/src/main/res/mipmap-*/ic_launcher.png
-  mobile/web/favicon.png, mobile/web/icons/*.png
-  mobile/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png  (existing sizes overwritten)
+  mobile/android/app/src/main/res/mipmap-*/ic_launcher.png            transparent legacy icon
+  mobile/android/app/src/main/res/drawable-*/ic_launcher_foreground.png  adaptive icon (Android 8+) on soft lavender
+  mobile/web/favicon.png, mobile/web/icons/*.png                      transparent (maskable ones on lavender)
+  mobile/ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png          on lavender: Apple requires opaque icons
 
 Run with the backend venv: backend/.venv/Scripts/python branding/make_assets.py
 """
@@ -108,9 +109,27 @@ def squared(logo: Image.Image, pad: float = 0.04) -> Image.Image:
     return square
 
 
-def on_tile(logo: Image.Image, size: int, pad: float = 0.12) -> Image.Image:
-    """Logo centred on a white square, for launcher icons that need an opaque background."""
-    tile = Image.new("RGBA", (size, size), (255, 255, 255, 255))
+ADAPTIVE_ICON_XML = """<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>
+"""
+
+BACKGROUND_COLOR_XML = """<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launchers always draw a backdrop (transparent turns black on many); soft lavender matches the app theme. -->
+    <color name="ic_launcher_background">#F3EEFF</color>
+</resources>
+"""
+
+LAVENDER = (243, 238, 255, 255)  # app's soft lavender, for places that require an opaque background
+CLEAR = (0, 0, 0, 0)
+
+
+def on_tile(logo: Image.Image, size: int, pad: float = 0.12, bg=CLEAR) -> Image.Image:
+    """Logo centred on a square canvas (transparent by default)."""
+    tile = Image.new("RGBA", (size, size), bg)
     inner = int(size * (1 - 2 * pad))
     lg = logo.resize((inner, inner), Image.LANCZOS)
     tile.paste(lg, ((size - inner) // 2, (size - inner) // 2), lg)
@@ -126,10 +145,22 @@ def main():
     print("logo.png", logo.size)
 
     android = MOBILE / "android" / "app" / "src" / "main" / "res"
-    for folder, size in {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}.items():
+    densities = {"mdpi": 1, "hdpi": 1.5, "xhdpi": 2, "xxhdpi": 3, "xxxhdpi": 4}
+    for folder, scale in densities.items():
+        # Legacy icon (Android 7 and older launchers): transparent, logo nearly fills it.
         d = android / f"mipmap-{folder}"
-        if d.exists():
-            on_tile(logo, size).convert("RGB").save(d / "ic_launcher.png")
+        d.mkdir(parents=True, exist_ok=True)
+        on_tile(logo, round(48 * scale), 0.04).save(d / "ic_launcher.png")
+        # Adaptive icon foreground: 108dp canvas, logo kept inside the 72dp safe zone.
+        fg = android / f"drawable-{folder}"
+        fg.mkdir(parents=True, exist_ok=True)
+        on_tile(logo, round(108 * scale), 0.18).save(fg / "ic_launcher_foreground.png")
+    anydpi = android / "mipmap-anydpi-v26"
+    anydpi.mkdir(exist_ok=True)
+    (anydpi / "ic_launcher.xml").write_text(ADAPTIVE_ICON_XML)
+    values = android / "values"
+    values.mkdir(exist_ok=True)
+    (values / "ic_launcher_background.xml").write_text(BACKGROUND_COLOR_XML)
     print("android icons done")
 
     web = MOBILE / "web"
@@ -138,7 +169,7 @@ def main():
         for name, size in {"Icon-192.png": 192, "Icon-512.png": 512}.items():
             on_tile(logo, size).save(web / "icons" / name)
         for name, size in {"Icon-maskable-192.png": 192, "Icon-maskable-512.png": 512}.items():
-            on_tile(logo, size, 0.2).save(web / "icons" / name)
+            on_tile(logo, size, 0.2, LAVENDER).save(web / "icons" / name)  # maskable icons must be opaque
         print("web icons done")
 
     ios = MOBILE / "ios" / "Runner" / "Assets.xcassets" / "AppIcon.appiconset"
@@ -146,7 +177,7 @@ def main():
         for f in ios.glob("*.png"):
             with Image.open(f) as existing:
                 size = existing.size[0]
-            on_tile(logo, size).convert("RGB").save(f)
+            on_tile(logo, size, 0.12, LAVENDER).convert("RGB").save(f)
         print("ios icons done")
 
 

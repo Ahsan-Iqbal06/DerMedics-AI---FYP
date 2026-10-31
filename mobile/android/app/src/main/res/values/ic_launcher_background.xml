@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launchers always draw a backdrop (transparent turns black on many); soft lavender matches the app theme. -->
+    <color name="ic_launcher_background">#F3EEFF</color>
+</resources>

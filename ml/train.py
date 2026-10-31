@@ -162,7 +162,8 @@ def export(model: nn.Module, args, labels: list[str], best_acc: float) -> None:
     with torch.no_grad():
         torch.jit.trace(model, example).save(str(args.out / "skin_model.pt"))
         torch.onnx.export(model, example, str(args.out / "skin_model.onnx"), input_names=["image"],
-                          output_names=["logits"], dynamo=False, opset_version=17)
+                          output_names=["logits"], dynamo=False, opset_version=17,
+                          dynamic_axes={"image": {0: "batch"}, "logits": {0: "batch"}})
     version = f"{args.arch}-{time.strftime('%Y%m%d')}-acc{best_acc:.2f}"
     (args.out / "labels.json").write_text(json.dumps({
         "labels": labels,
