@@ -37,7 +37,26 @@
         "prescription_required": true,
         "caution": "Use only when clinically indicated and under professional guidance."
       }
-    ]
+    ],
+    "causes": [
+      "Excess oil (sebum) production",
+      "Clogged hair follicles from dead skin cells",
+      "Acne-causing bacteria (C. acnes)",
+      "Hormonal changes, e.g. puberty or periods"
+    ],
+    "risk_factors": [
+      "Teenage years and hormonal shifts",
+      "Family history of acne",
+      "Oily or heavy skin and hair products",
+      "Some medicines such as steroids"
+    ],
+    "dermatologist_care": [
+      "Skin examination to grade acne severity",
+      "Prescription creams or gels (e.g. retinoids)",
+      "Oral treatment for moderate to severe acne",
+      "Advice and treatment to prevent scarring"
+    ],
+    "outlook": "Acne usually improves with consistent treatment over 6-12 weeks; most people see it settle by their mid-twenties."
   },
   "eczema": {
     "display_name": "Eczema (Atopic dermatitis)",
@@ -77,7 +96,26 @@
         "prescription_required": false,
         "caution": "Can cause drowsiness; check dosing for children."
       }
-    ]
+    ],
+    "causes": [
+      "Weak skin barrier that loses moisture",
+      "Overactive immune response in the skin",
+      "Irritants such as soaps and detergents",
+      "Allergens like dust mites, pollen or pet dander"
+    ],
+    "risk_factors": [
+      "Family history of eczema, asthma or hay fever",
+      "Dry or cold climates",
+      "Frequent hand washing or wet work",
+      "Stress and sweating"
+    ],
+    "dermatologist_care": [
+      "Examination to confirm eczema and its severity",
+      "Patch testing if an allergy is suspected",
+      "Prescription anti-inflammatory creams for flare-ups",
+      "Follow-up to adjust the treatment plan"
+    ],
+    "outlook": "Eczema can't be cured but is usually well controlled with daily moisturising and prompt treatment of flare-ups; many children improve as they grow."
   },
   "psoriasis": {
     "display_name": "Psoriasis",
@@ -117,7 +155,26 @@
         "prescription_required": true,
         "caution": "Avoid face and skin folds unless advised."
       }
-    ]
+    ],
+    "causes": [
+      "Immune system speeding up skin cell turnover",
+      "Genetic tendency",
+      "Triggers such as stress, infections or skin injury",
+      "Some medicines, alcohol and smoking"
+    ],
+    "risk_factors": [
+      "Family history of psoriasis",
+      "Smoking",
+      "Obesity",
+      "Chronic stress"
+    ],
+    "dermatologist_care": [
+      "Skin, nail and scalp examination",
+      "Questions about joint pain (psoriatic arthritis)",
+      "Prescription creams, light therapy or tablets",
+      "Regular follow-up for long-term control"
+    ],
+    "outlook": "Psoriasis is long-term with flares and quieter periods; modern treatments can clear or greatly reduce it for most people."
   },
   "rosacea": {
     "display_name": "Rosacea",
@@ -156,7 +213,26 @@
         "prescription_required": false,
         "caution": "Prefer mineral (zinc/titanium) formulas for sensitive skin."
       }
-    ]
+    ],
+    "causes": [
+      "Sensitive facial blood vessels",
+      "Immune and nerve reactions in the skin",
+      "Triggers like heat, sun, spicy food and alcohol",
+      "Skin mites (Demodex) in some people"
+    ],
+    "risk_factors": [
+      "Fair skin that flushes easily",
+      "Age 30-50",
+      "Family history of rosacea",
+      "Frequent sun exposure"
+    ],
+    "dermatologist_care": [
+      "Facial examination to identify the rosacea type",
+      "Prescription creams or gels",
+      "Oral treatment for bumps and pimples",
+      "Laser or light treatment for visible vessels"
+    ],
+    "outlook": "Rosacea is long-term but usually well controlled by avoiding triggers and using treatment."
   },
   "melasma": {
     "display_name": "Melasma",
@@ -194,7 +270,26 @@
         "prescription_required": true,
         "caution": "Avoid unsupervised or long-term use; risk of ochronosis."
       }
-    ]
+    ],
+    "causes": [
+      "Sun and visible light exposure",
+      "Hormonal changes such as pregnancy or contraceptive pills",
+      "Overactive pigment cells",
+      "Heat exposure"
+    ],
+    "risk_factors": [
+      "Women and people with medium to darker skin",
+      "Pregnancy",
+      "Family history of melasma",
+      "Irritating skin products"
+    ],
+    "dermatologist_care": [
+      "Examination, sometimes with a Wood's lamp",
+      "Prescription lightening creams",
+      "Chemical peels or other procedures when suitable",
+      "Sun-protection plan and follow-up"
+    ],
+    "outlook": "Melasma often fades slowly with strict sun protection and treatment, but it can return with sun exposure."
   },
   "tinea": {
     "display_name": "Tinea (Fungal skin infection)",
@@ -234,7 +329,26 @@
         "prescription_required": true,
         "caution": "Need medical assessment; may affect liver."
       }
-    ]
+    ],
+    "causes": [
+      "Fungal infection of the skin (dermatophytes)",
+      "Warm, moist skin folds",
+      "Contact with infected people, animals or surfaces",
+      "Sharing towels, combs or clothing"
+    ],
+    "risk_factors": [
+      "Hot and humid weather",
+      "Heavy sweating or tight clothing",
+      "Weakened immunity or diabetes",
+      "Using steroid creams on the rash"
+    ],
+    "dermatologist_care": [
+      "Examination and, if needed, a skin scraping test",
+      "Prescription antifungal creams",
+      "Oral antifungal tablets for widespread or stubborn cases",
+      "Advice to prevent spread and relapse"
+    ],
+    "outlook": "Tinea usually clears in 2-4 weeks with correct antifungal treatment; finishing the full course prevents relapse."
   },
   "vitiligo": {
     "display_name": "Vitiligo",
@@ -272,7 +386,26 @@
         "prescription_required": true,
         "caution": "May cause burning sensation initially."
       }
-    ]
+    ],
+    "causes": [
+      "Immune system attacking pigment cells",
+      "Genetic tendency",
+      "Possible triggers like stress or skin injury",
+      "Associated autoimmune conditions"
+    ],
+    "risk_factors": [
+      "Family history of vitiligo",
+      "Thyroid or other autoimmune disease",
+      "Skin trauma (patches can appear at injury sites)",
+      "Severe sunburn"
+    ],
+    "dermatologist_care": [
+      "Examination, often with a Wood's lamp",
+      "Blood tests for thyroid or autoimmune disease",
+      "Prescription creams or light therapy",
+      "Follow-up to track spread and response"
+    ],
+    "outlook": "Vitiligo is not harmful or contagious; treatment can restore colour in some areas, and results vary between people."
   },
   "warts": {
     "display_name": "Warts",
@@ -303,7 +436,26 @@
         "prescription_required": true,
         "caution": "May blister; several sessions may be needed."
       }
-    ]
+    ],
+    "causes": [
+      "Human papillomavirus (HPV) infection of the skin",
+      "Entry through small cuts or scratches",
+      "Direct skin contact",
+      "Contact with wet surfaces like pool floors"
+    ],
+    "risk_factors": [
+      "Children and teenagers",
+      "Weakened immunity",
+      "Nail biting or picking at skin",
+      "Walking barefoot in shared showers"
+    ],
+    "dermatologist_care": [
+      "Examination to confirm the wart type",
+      "Freezing treatment (cryotherapy)",
+      "Prescription-strength wart treatments",
+      "Removal of stubborn warts when needed"
+    ],
+    "outlook": "Many warts go away on their own within 1-2 years; treatment can speed this up, though warts can come back."
   },
   "urticaria": {
     "display_name": "Urticaria (Hives)",
@@ -334,7 +486,26 @@
         "prescription_required": false,
         "caution": "For symptom relief only."
       }
-    ]
+    ],
+    "causes": [
+      "Release of histamine in the skin",
+      "Allergic reactions to food, medicines or insect stings",
+      "Infections",
+      "Physical triggers such as heat, cold or pressure"
+    ],
+    "risk_factors": [
+      "History of allergies",
+      "Recent infection or new medicine",
+      "Autoimmune conditions (for chronic hives)",
+      "Stress"
+    ],
+    "dermatologist_care": [
+      "History and examination to look for triggers",
+      "Allergy or blood tests when needed",
+      "Antihistamine treatment plan",
+      "Specialist treatment for long-lasting hives"
+    ],
+    "outlook": "Most hives clear within days to weeks; long-lasting (chronic) hives are usually well controlled with daily antihistamines."
   },
   "seborrheic_dermatitis": {
     "display_name": "Seborrheic dermatitis",
@@ -366,7 +537,26 @@
         "prescription_required": false,
         "caution": "May dry hair."
       }
-    ]
+    ],
+    "causes": [
+      "Skin reaction to a common yeast (Malassezia)",
+      "Oily areas of skin",
+      "Stress and tiredness",
+      "Cold, dry weather"
+    ],
+    "risk_factors": [
+      "Oily skin",
+      "Infants and adults aged 30-60",
+      "Some neurological conditions",
+      "Weakened immunity"
+    ],
+    "dermatologist_care": [
+      "Examination of scalp, face and chest",
+      "Medicated shampoos and antifungal creams",
+      "Short courses of anti-inflammatory creams",
+      "Maintenance plan to prevent flares"
+    ],
+    "outlook": "Seborrheic dermatitis tends to come and go but is usually easy to control with regular treatment."
   },
   "scabies": {
     "display_name": "Scabies",
@@ -397,7 +587,26 @@
         "prescription_required": true,
         "caution": "Not for young children or pregnancy without advice."
       }
-    ]
+    ],
+    "causes": [
+      "Tiny mites burrowing into the skin",
+      "Close skin-to-skin contact",
+      "Sharing bedding, clothing or towels",
+      "Itching from an allergic reaction to the mites"
+    ],
+    "risk_factors": [
+      "Crowded living conditions",
+      "Close contact with an infected person",
+      "Care homes, hostels and schools",
+      "Weakened immunity"
+    ],
+    "dermatologist_care": [
+      "Examination for burrows, sometimes a skin scraping",
+      "Prescription treatment for the whole household",
+      "Advice on washing bedding and clothing",
+      "Follow-up if itching continues"
+    ],
+    "outlook": "Scabies is cured with correct treatment of everyone in close contact; itching can last 2-4 weeks after the mites are gone."
   },
   "impetigo": {
     "display_name": "Impetigo",
@@ -428,7 +637,26 @@
         "prescription_required": true,
         "caution": "Only as prescribed."
       }
-    ]
+    ],
+    "causes": [
+      "Bacterial infection (staph or strep bacteria)",
+      "Entry through cuts, bites or eczema",
+      "Close contact with an infected person",
+      "Sharing towels or toys"
+    ],
+    "risk_factors": [
+      "Young children",
+      "Warm, humid weather",
+      "Existing skin conditions like eczema",
+      "Crowded settings such as schools"
+    ],
+    "dermatologist_care": [
+      "Examination, sometimes a swab test",
+      "Prescription antibiotic cream",
+      "Oral antibiotics for widespread infection",
+      "Advice to stop it spreading"
+    ],
+    "outlook": "Impetigo usually clears within 7-10 days of treatment and stops being contagious after about 48 hours of antibiotics."
   },
   "pigmentation_disorder": {
     "display_name": "Pigmentation disorder",
@@ -467,7 +695,26 @@
         "prescription_required": true,
         "caution": "Only under dermatologist supervision."
       }
-    ]
+    ],
+    "causes": [
+      "Sun exposure",
+      "Inflammation after acne, injury or rashes",
+      "Hormonal changes",
+      "Some medicines and skin products"
+    ],
+    "risk_factors": [
+      "Medium to darker skin tones",
+      "Frequent sun exposure without protection",
+      "Picking at spots or scabs",
+      "Harsh skin treatments"
+    ],
+    "dermatologist_care": [
+      "Examination to identify the type of pigmentation",
+      "Checking any spot that looks unusual",
+      "Prescription lightening creams or peels when suitable",
+      "Sun-protection plan and follow-up"
+    ],
+    "outlook": "Many pigmentation changes fade over months with sun protection and treatment; new or changing dark spots should always be checked."
   },
   "contact_dermatitis": {
     "display_name": "Contact dermatitis",
@@ -507,6 +754,25 @@
         "prescription_required": false,
         "caution": "Can cause drowsiness."
       }
-    ]
+    ],
+    "causes": [
+      "Direct contact with an irritant (soaps, chemicals)",
+      "Allergic reaction to a substance (e.g. nickel, fragrance)",
+      "Repeated wetting and drying of the skin",
+      "Some plants and cosmetics"
+    ],
+    "risk_factors": [
+      "Jobs with wet work or chemicals",
+      "History of eczema",
+      "Frequent use of fragranced products",
+      "Wearing nickel jewellery"
+    ],
+    "dermatologist_care": [
+      "Examination and history of exposures",
+      "Patch testing to find allergens",
+      "Prescription anti-inflammatory creams",
+      "Advice on avoiding the trigger"
+    ],
+    "outlook": "Contact dermatitis usually clears in 2-4 weeks once the trigger is identified and avoided."
   }
 }

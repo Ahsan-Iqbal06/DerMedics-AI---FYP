@@ -88,26 +88,34 @@ Tests: `flutter analyze` and `flutter test`.
 - The web build is served by `python mobile/tool/serve_web.py` (no-cache, so rebuilds show up on reload).
 
 ### Screens
-Splash • Login • Register • Home • Analyze (upload) • Result • Inconclusive • Medicine suggestions • "Who is this scan for?" • Reports • Report detail (PDF download) • Find nearby care (list/map, device location) • Profile & settings.
+Splash • Login • Register • Confirm email (6-digit code) • Forgot password • Home • Analyze (upload) • Result • Inconclusive • Medicine suggestions • "Who is this scan for?" • Reports • Patient report (styled like the PDF; PDF saves to Android Downloads, the iPhone Files app or the PC's Downloads) • Find nearby care (list/map, device location) • Profile & settings.
 
 ### Authentication
 - Passwords are hashed with Argon2. The app and API enforce the same strength rules: 8+ characters with upper, lower, digit and symbol.
 - Login issues a short-lived JWT access token (15 min) and a refresh token (7 days). Refresh tokens are stored hashed and rotated on every use. Reusing an old refresh token revokes all of that user's sessions.
-- Login and register are rate-limited (5 per minute per IP). Error messages don't reveal whether an email is registered.
-- Logging out and changing the password revoke refresh tokens. The app keeps tokens in secure storage (Keychain / Keystore) and refreshes them automatically when a request gets a 401.
+- Sign-up stores name, email, phone, country and city, then emails a 6-digit code; the account activates only when the code is entered together with the sign-up password. An unconfirmed address can be reclaimed by its real owner.
+- Forgot password emails a 6-digit code to the registered address (15 min expiry, 5 tries per code, 60 s resend, 5 codes per hour per account) and tells the user if the email isn't registered.
+- Emails are sent from the app's own Gmail account (`SMTP_*` in `backend/.env`, an App Password); without it, codes are written to the server log.
+- Login and register are rate-limited (5 per minute per IP), and an account locks for 15 minutes after 10 wrong passwords.
+- Logging out revokes the refresh token; changing or resetting the password signs out every device at once.
+- Skin and profile photos are served only to their owner through `/api/files/...`; there is no public uploads folder. The app keeps tokens in secure storage (Keychain / Keystore) and refreshes them automatically when a request gets a 401.
 - Every analysis, report and PDF is scoped to its owner.
 
 ## API summary
 | Method | Path | Purpose |
 |---|---|---|
-| POST | /api/auth/register, /login, /refresh, /logout | Authentication |
-| GET/PATCH | /api/auth/me | Profile & region |
+| POST | /api/auth/register, /verify-email, /resend-verification | Sign-up with emailed code |
+| POST | /api/auth/login, /refresh, /logout | Sign-in and sessions |
+| POST | /api/auth/forgot-password, /verify-reset-code, /reset-password | Password reset by emailed code |
+| GET/PATCH | /api/auth/me | Profile, phone & region |
+| POST/DELETE | /api/auth/me/avatar | Profile photo |
+| GET | /api/files/analyses/{name}, /api/files/avatars/{name} | Owner-only photos |
 | POST | /api/auth/change-password | Change password |
 | POST | /api/analysis | Upload image → full AI pipeline |
 | GET | /api/analysis/{id} | Analysis with dermatologist matches |
 | POST/GET | /api/reports | Create / list (filter, search) |
 | GET/DELETE | /api/reports/{id} | Report detail / delete |
-| GET | /api/reports/{id}/pdf | PDF export |
+| GET | /api/reports/{id}/pdf | Patient report PDF |
 | GET | /api/dermatologists | Search care options |
 | GET | /api/dashboard | Home counts + recent activity |
 

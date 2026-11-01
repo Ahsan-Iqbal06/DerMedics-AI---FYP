@@ -124,8 +124,9 @@ def _capsule(icon_colour: str) -> Drawing:
 
 def _header(report: Report) -> list:
     created = report.created_at
-    if created is not None and created.tzinfo is None:
-        created = created.replace(tzinfo=UTC)
+    if created is not None:
+        # Stored in UTC; print in the server's local time (e.g. Pakistan, UTC+5), as the app shows it.
+        created = (created if created.tzinfo else created.replace(tzinfo=UTC)).astimezone()
     date = created.strftime("%d/%m/%Y") if created else ""
     time = created.strftime("%I:%M %p") if created else ""
     logo = RLImage(str(LOGO), width=20 * mm, height=20 * mm) if LOGO.exists() else Spacer(1, 20 * mm)

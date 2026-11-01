@@ -122,12 +122,29 @@ class ConclusiveResult extends StatelessWidget {
         if (d != null) ...[
           _InfoCard(icon: Icons.info_outline_rounded, title: 'About ${d.name.toLowerCase()}', body: d.overview),
           SizedBox(height: 10),
+          if (d.symptoms.isNotEmpty) ...[
+            _InfoCard(icon: Icons.visibility_outlined, title: 'Common symptoms', bullets: d.symptoms, body: ''),
+            SizedBox(height: 10),
+          ],
+          if (d.causes.isNotEmpty || d.riskFactors.isNotEmpty) ...[
+            _InfoCard(
+              icon: Icons.bolt_outlined,
+              title: 'Causes & risk factors',
+              bullets: [...d.causes, ...d.riskFactors.map((r) => 'Risk factor: $r')],
+              body: '',
+            ),
+            SizedBox(height: 10),
+          ],
           _InfoCard(
             icon: Icons.check_rounded,
-            title: 'Symptoms & precautions',
-            bullets: [...d.symptoms, ...d.precautions.map((p) => 'Precaution: $p')],
+            title: 'Self-care & when to see a doctor',
+            bullets: d.precautions,
             body: d.whenToSeeDoctor,
           ),
+          if (d.outlook.isNotEmpty) ...[
+            SizedBox(height: 10),
+            _InfoCard(icon: Icons.trending_up_rounded, title: 'Outlook', body: d.outlook),
+          ],
         ],
         SizedBox(height: 16),
         AppCard(
