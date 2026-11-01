@@ -21,7 +21,8 @@ Future<void> downloadReportPdf(BuildContext context, WidgetRef ref, int reportId
   showSnack(context, 'Preparing PDF…');
   try {
     final bytes = await ref.read(repositoryProvider).reportPdf(reportId);
-    await saveAndOpenFile(bytes, 'dermedics-report-$reportId.pdf');
+    final savedTo = await saveAndOpenFile(bytes, 'DerMedics-Report-DM-${reportId.toString().padLeft(6, '0')}.pdf');
+    if (context.mounted) showSnack(context, 'PDF saved to $savedTo');
   } on ApiException catch (e) {
     if (context.mounted) showSnack(context, e.message);
   } catch (_) {

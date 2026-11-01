@@ -176,8 +176,13 @@ class ConditionInfo(BaseModel):
     name: str
     overview: str
     symptoms: list[str] = []
+    causes: list[str] = []
+    risk_factors: list[str] = []
     precautions: list[str] = []
     when_to_see_doctor: str = ""
+    # What a dermatologist typically does for this condition (examination, tests, follow-up).
+    dermatologist_care: list[str] = []
+    outlook: str = ""
 
 
 class MedicineSuggestion(BaseModel):

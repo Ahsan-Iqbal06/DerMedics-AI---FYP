@@ -36,8 +36,12 @@ class KnowledgeBaseProvider:
             name=info["display_name"],
             overview=info["overview"],
             symptoms=info["symptoms"],
+            causes=info.get("causes", []),
+            risk_factors=info.get("risk_factors", []),
             precautions=info["precautions"],
             when_to_see_doctor=info["when_to_see_doctor"],
+            dermatologist_care=info.get("dermatologist_care", []),
+            outlook=info.get("outlook", ""),
         )
 
     def medicines(self, label: str, description: ConditionInfo, region: str) -> list[MedicineSuggestion]:
@@ -82,9 +86,14 @@ class OpenAICompatibleProvider:
         prompt = (
             f"An image classifier suggested the skin condition: {name}.\n"
             f"Body area: {body_area or 'not specified'}. User-reported notes: {symptoms or 'none'}.\n"
-            "Return JSON with keys: name (string), overview (2-3 sentences: what it is and common triggers), "
-            "symptoms (list of 3-5 short strings), precautions (list of 3-5 short self-care strings), "
-            "when_to_see_doctor (1 sentence including red-flag signs)."
+            "Return JSON with keys: name (string), "
+            "overview (4-6 sentences: what it is, how it looks, how common it is, whether it is contagious), "
+            "symptoms (list of 4-6 short strings), causes (list of 3-5 short strings: causes and triggers), "
+            "risk_factors (list of 3-5 short strings), precautions (list of 4-6 short self-care strings), "
+            "when_to_see_doctor (1-2 sentences including red-flag signs), "
+            "dermatologist_care (list of 3-5 short strings: what a dermatologist typically examines, tests or "
+            "arranges for follow-up for this condition), "
+            "outlook (1-2 sentences: usual course and how well it responds to care)."
         )
         try:
             data = self._ask_json(prompt)

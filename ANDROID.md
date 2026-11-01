@@ -4,12 +4,12 @@ Ready-made, signed release APKs are in **`release/android/`**:
 
 | File | Use it for | Size |
 |---|---|---|
-| `DerMedicsAI-v1.0.5-universal.apk` | **Any Android phone** | 54 MB |
+| `DerMedicsAI-v1.0.6-universal.apk` | **Any Android phone** | 54 MB |
 
 Requires Android 7.0 or newer. Signed with the DerMedics release key, so it installs as an update over 1.0.0 and your
 account stays signed in. Smaller per-processor APKs can be built with `--split-per-abi` (see *Rebuilding* below).
 
-**New in 1.0.5:** new accounts confirm their email with a 6-digit code before first sign-in. Also from 1.0.4: skin and profile photos are visible only to their owner, and changing or resetting your password signs out every device immediately. Update from 1.0.3 or older, or photos won't load. (1.0.3 added phone number at sign-up.)
+**New in 1.0.6:** redesigned patient report and PDF; PDFs save to Downloads/DerMedics AI. From 1.0.5: new accounts confirm their email with a 6-digit code before first sign-in. Also from 1.0.4: skin and profile photos are visible only to their owner, and changing or resetting your password signs out every device immediately. Update from 1.0.3 or older, or photos won't load. (1.0.3 added phone number at sign-up.)
 
 ---
 
@@ -18,7 +18,7 @@ account stays signed in. Smaller per-processor APKs can be built with `--split-p
 1. Copy the APK to the phone using any of these:
    - **USB cable:** drag it into the phone's *Download* folder.
    - **Google Drive** or **WhatsApp**: send the file to yourself.
-   - **adb:** `adb install release/android/DerMedicsAI-v1.0.5-universal.apk`.
+   - **adb:** `adb install release/android/DerMedicsAI-v1.0.6-universal.apk`.
 2. On the phone, open the APK with **Files** or **Downloads**.
 3. If Android warns about unknown apps, tap **Settings → Allow from this source**, then go back and tap **Install**.
 4. If **Play Protect** shows "unrecognised app", tap **More details → Install anyway**. This is normal for apps not from the Play Store.
@@ -52,7 +52,7 @@ flutter build apk --release --split-per-abi --dart-define=API_BASE_URL=http://19
 ```
 
 The output goes to `mobile/build/app/outputs/flutter-apk/`. Close the Android emulator first, because this PC doesn't have enough RAM for both.
-Before each new release, raise `version:` in `mobile/pubspec.yaml` (for example `1.0.5+2`) so phones accept it as an update.
+Before each new release, raise `version:` in `mobile/pubspec.yaml` (for example `1.0.6+2`) so phones accept it as an update.
 
 ### Signing key — keep it safe
 

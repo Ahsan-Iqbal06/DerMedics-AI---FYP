@@ -8,6 +8,7 @@ from app.api.deps import get_current_user
 from app.db.session import get_db
 from app.models import Analysis, Report, User
 from app.schemas import ReportIn, ReportListItem, ReportOut
+from app.services.dermatologists import search_dermatologists
 from app.services.pdf import render_report_pdf
 from app.services.pipeline import to_out
 
@@ -109,10 +110,12 @@ def get_report(report_id: int, user: User = Depends(get_current_user), db: Sessi
 @router.get("/{report_id}/pdf")
 def report_pdf(report_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     report = _get_owned(db, report_id, user)
+    doctors = search_dermatologists(db, country=user.country, city=user.city,
+                                    condition=report.analysis.predicted_label, limit=3)
     return Response(
-        render_report_pdf(report),
+        render_report_pdf(report, doctors),
         media_type="application/pdf",
-        headers={"Content-Disposition": f'attachment; filename="dermedics-report-{report.id}.pdf"'},
+        headers={"Content-Disposition": f'attachment; filename="DerMedics-Report-DM-{report.id:06d}.pdf"'},
     )
 
 

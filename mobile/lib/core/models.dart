@@ -43,6 +43,10 @@ class ConditionInfo {
     required this.symptoms,
     required this.precautions,
     required this.whenToSeeDoctor,
+    this.causes = const [],
+    this.riskFactors = const [],
+    this.dermatologistCare = const [],
+    this.outlook = '',
   });
 
   final String name;
@@ -50,6 +54,12 @@ class ConditionInfo {
   final List<String> symptoms;
   final List<String> precautions;
   final String whenToSeeDoctor;
+  final List<String> causes;
+  final List<String> riskFactors;
+
+  /// What a dermatologist typically examines, tests or follows up for this condition.
+  final List<String> dermatologistCare;
+  final String outlook;
 
   factory ConditionInfo.fromJson(Map<String, dynamic> j) => ConditionInfo(
         name: j['name'] as String? ?? '',
@@ -57,6 +67,10 @@ class ConditionInfo {
         symptoms: _strings(j['symptoms']),
         precautions: _strings(j['precautions']),
         whenToSeeDoctor: j['when_to_see_doctor'] as String? ?? '',
+        causes: _strings(j['causes']),
+        riskFactors: _strings(j['risk_factors']),
+        dermatologistCare: _strings(j['dermatologist_care']),
+        outlook: j['outlook'] as String? ?? '',
       );
 }
 
