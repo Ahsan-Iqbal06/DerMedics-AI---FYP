@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, func, true
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
@@ -13,11 +13,16 @@ class User(Base):
     full_name: Mapped[str] = mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+    phone: Mapped[str] = mapped_column(String(20), default="")
     country: Mapped[str] = mapped_column(String(80), default="Pakistan")
     city: Mapped[str] = mapped_column(String(80), default="")
     # File name under uploads/avatars/, or None for the initial-letter avatar.
     avatar_path: Mapped[str | None] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # New accounts stay inactive for sign-in until the emailed code proves the address belongs to them.
+    email_verified: Mapped[bool] = mapped_column(Boolean, default=False, server_default=true())
+    # Raised on every password change/reset; access tokens carrying an older number stop working.
+    token_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
@@ -28,7 +33,7 @@ class User(Base):
 
     @property
     def avatar_url(self) -> str | None:
-        return f"/uploads/avatars/{self.avatar_path}" if self.avatar_path else None
+        return f"/api/files/avatars/{self.avatar_path}" if self.avatar_path else None
 
 
 class RefreshToken(Base):

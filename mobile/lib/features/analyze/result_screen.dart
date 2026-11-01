@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/config.dart';
 import '../../core/models.dart';
 import '../../core/repository.dart';
 import '../../core/theme.dart';
@@ -58,12 +57,11 @@ class ConclusiveResult extends StatelessWidget {
                   if (a.imageUrl.isNotEmpty)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        '${AppConfig.baseUrl}${a.imageUrl}',
+                      child: AuthImage(
+                        a.imageUrl,
                         width: 64,
                         height: 64,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => IconBubble(Icons.image_outlined, size: 64),
+                        fallback: IconBubble(Icons.image_outlined, size: 64),
                       ),
                     ),
                   SizedBox(width: 14),

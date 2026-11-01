@@ -110,7 +110,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final (title, subtitle) = switch (_step) {
-      _Step.email => ('Forgot password?', "Enter your account email and we'll send you a 6-digit code."),
+      _Step.email => ('Forgot password?', "Enter the email you registered with and we'll send a 6-digit code to it."),
       _Step.code => ('Check your email', 'We sent a 6-digit code to ${_email.text.trim()}. It expires in 15 minutes.'),
       _Step.password => ('Set a new password', 'Choose a strong password you haven\'t used here before.'),
       _Step.done => ('Password updated', 'You can now sign in with your new password.'),

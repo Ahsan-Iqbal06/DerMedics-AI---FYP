@@ -1,4 +1,5 @@
 import io
+from xml.sax.saxutils import escape
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -17,6 +18,11 @@ MINT = colors.HexColor("#DDF4ED")
 AMBER = colors.HexColor("#FFF4DC")
 
 
+def esc(value) -> str:
+    """ReportLab paragraphs read <tags>; escape user- and AI-written text so it prints as plain text."""
+    return escape(str(value if value is not None else ""))
+
+
 def render_report_pdf(report: Report) -> bytes:
     a = report.analysis
     buf = io.BytesIO()
@@ -30,7 +36,7 @@ def render_report_pdf(report: Report) -> bytes:
 
     story = [Paragraph("DerMedics AI — Skin analysis report", h1)]
     created = report.created_at.strftime("%d %b %Y, %H:%M") if report.created_at else ""
-    story.append(Paragraph(f"Report #{report.id} • {created} • Region: {a.region}", small))
+    story.append(Paragraph(f"Report #{report.id} • {created} • Region: {esc(a.region)}", small))
     story.append(Spacer(1, 8))
 
     subject = [
@@ -41,7 +47,7 @@ def render_report_pdf(report: Report) -> bytes:
         ["Noticed", a.symptoms or "—"],
         ["Health notes", report.health_notes or "—"],
     ]
-    t = Table([[Paragraph(k, small), Paragraph(v, body)] for k, v in subject], colWidths=[35 * mm, None])
+    t = Table([[Paragraph(k, small), Paragraph(esc(v), body)] for k, v in subject], colWidths=[35 * mm, None])
     t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 3)]))
     story.append(t)
 
@@ -55,28 +61,28 @@ def render_report_pdf(report: Report) -> bytes:
 
     story.append(Paragraph("AI analysis", h2))
     if a.status == "ai":
-        result = f"<b>{a.display_name}</b> — model confidence {a.confidence * 100:.0f}%"
+        result = f"<b>{esc(a.display_name)}</b> — model confidence {a.confidence * 100:.0f}%"
         if a.is_demo:
             result += " <font color='#B7791F'>(demo model — illustrative only)</font>"
         story.append(Paragraph(result, body))
         d = a.description or {}
         if d:
             story.append(Paragraph("About the condition", h2))
-            story.append(Paragraph(d.get("overview", ""), body))
+            story.append(Paragraph(esc(d.get("overview", "")), body))
             for title, key in (("Symptoms", "symptoms"), ("Precautions", "precautions")):
                 if d.get(key):
                     story.append(Paragraph(f"<b>{title}</b>", body))
                     for item in d[key]:
-                        story.append(Paragraph(f"• {item}", body))
+                        story.append(Paragraph(f"• {esc(item)}", body))
             if d.get("when_to_see_doctor"):
-                story.append(Paragraph(f"<b>When to see a doctor:</b> {d['when_to_see_doctor']}", body))
+                story.append(Paragraph(f"<b>When to see a doctor:</b> {esc(d['when_to_see_doctor'])}", body))
         if a.medicines:
             story.append(Paragraph("AI medicine suggestions (informational)", h2))
             rows = [["Option", "Type", "Notes"]]
             for m in a.medicines:
                 rx = " (prescription required)" if m.get("prescription_required") else ""
-                rows.append([Paragraph(m["name"] + rx, body), m.get("type", ""),
-                             Paragraph(f"{m.get('usage_note', '')} {m.get('caution', '')}", small)])
+                rows.append([Paragraph(esc(m["name"] + rx), body), m.get("type", ""),
+                             Paragraph(esc(f"{m.get('usage_note', '')} {m.get('caution', '')}"), small)])
             mt = Table(rows, colWidths=[55 * mm, 22 * mm, None], repeatRows=1)
             mt.setStyle(TableStyle([
                 ("BACKGROUND", (0, 0), (-1, 0), MINT),
@@ -99,7 +105,7 @@ def render_report_pdf(report: Report) -> bytes:
                               ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))
     story.append(note)
     story.append(Spacer(1, 6))
-    story.append(Paragraph(f"Model: {a.model_version} • Text source: {a.llm_source}", small))
+    story.append(Paragraph(esc(f"Model: {a.model_version} • Text source: {a.llm_source}"), small))
 
     doc.build(story)
     return buf.getvalue()

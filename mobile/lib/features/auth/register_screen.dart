@@ -21,6 +21,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
+  final _phone = TextEditingController();
   final _country = TextEditingController(text: 'Pakistan');
   final _city = TextEditingController();
   bool _acceptTerms = false;
@@ -32,7 +33,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   void dispose() {
     _termsTap.dispose();
-    for (final c in [_name, _email, _password, _confirm, _country, _city]) {
+    for (final c in [_name, _email, _password, _confirm, _phone, _country, _city]) {
       c.dispose();
     }
     super.dispose();
@@ -52,10 +53,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             email: _email.text,
             password: _password.text,
             confirmPassword: _confirm.text,
+            phone: _phone.text,
             country: _country.text,
             city: _city.text,
             acceptTerms: _acceptTerms,
           );
+      if (mounted) context.go('/verify-email', extra: (email: _email.text.trim(), password: _password.text));
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } finally {
@@ -127,6 +130,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   decoration: InputDecoration(
                     hintText: 'you@example.com',
                     prefixIcon: Icon(Icons.mail_outline_rounded, color: context.c.muted, size: 20),
+                  ),
+                ),
+                SizedBox(height: 14),
+                FieldLabel('PHONE NUMBER *'),
+                TextFormField(
+                  controller: _phone,
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.next,
+                  autofillHints: [AutofillHints.telephoneNumber],
+                  validator: Validators.phone,
+                  decoration: InputDecoration(
+                    hintText: '03001234567',
+                    prefixIcon: Icon(Icons.phone_outlined, color: context.c.muted, size: 20),
                   ),
                 ),
                 SizedBox(height: 14),

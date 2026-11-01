@@ -50,19 +50,25 @@ class AuthController extends Notifier<AuthState> {
     required String email,
     required String password,
     required String confirmPassword,
+    required String phone,
     required String country,
     required String city,
     required bool acceptTerms,
   }) async {
-    final res = await _repo.register(
+    await _repo.register(
       fullName: fullName.trim(),
       email: email.trim(),
       password: password,
       confirmPassword: confirmPassword,
+      phone: phone.trim(),
       country: country.trim(),
       city: city.trim(),
       acceptTerms: acceptTerms,
     );
+  }
+
+  Future<void> verifyEmail(String email, String password, String code) async {
+    final res = await _repo.verifyEmail(email.trim(), password, code);
     await _tokens.save(res.accessToken, res.refreshToken);
     state = AuthState(AuthStatus.authenticated, res.user);
   }
@@ -90,6 +96,13 @@ class Validators {
   static String? email(String? v) {
     if (v == null || v.trim().isEmpty) return 'Enter your email';
     if (!_email.hasMatch(v.trim())) return 'Enter a valid email address';
+    return null;
+  }
+
+  static String? phone(String? v) {
+    final digits = (v ?? '').replaceAll(RegExp(r'[\s\-().]'), '');
+    if (digits.isEmpty) return 'Enter your phone number';
+    if (!RegExp(r'^\+?\d{7,15}$').hasMatch(digits)) return 'Enter a valid phone number, e.g. 03001234567';
     return null;
   }
 

@@ -7,12 +7,13 @@ from app.db.session import Base
 
 
 class PasswordReset(Base):
-    """A one-time emailed code for resetting a forgotten password."""
+    """A one-time emailed code: "verify" confirms a new account's email, "reset" allows a new password."""
 
     __tablename__ = "password_resets"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    purpose: Mapped[str] = mapped_column(String(10), default="reset", server_default="reset")
     # HMAC of the 6-digit code (never stored in plain text).
     code_hash: Mapped[str] = mapped_column(String(64))
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

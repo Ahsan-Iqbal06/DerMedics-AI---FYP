@@ -21,6 +21,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  late final TextEditingController _phone;
   late final TextEditingController _country;
   late final TextEditingController _city;
   bool _savingRegion = false;
@@ -30,25 +31,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     final user = ref.read(authControllerProvider).user;
+    _phone = TextEditingController(text: user?.phone ?? '');
     _country = TextEditingController(text: user?.country ?? '');
     _city = TextEditingController(text: user?.city ?? '');
   }
 
   @override
   void dispose() {
+    _phone.dispose();
     _country.dispose();
     _city.dispose();
     super.dispose();
   }
 
   Future<void> _saveRegion() async {
+    final phone = _phone.text.trim();
+    final phoneError = phone.isEmpty ? null : Validators.phone(phone);
+    if (phoneError != null) {
+      showSnack(context, phoneError);
+      return;
+    }
     setState(() => _savingRegion = true);
     try {
-      final user = await ref
-          .read(repositoryProvider)
-          .updateProfile(country: _country.text.trim(), city: _city.text.trim());
+      final user = await ref.read(repositoryProvider).updateProfile(
+            phone: phone.isEmpty ? null : phone,
+            country: _country.text.trim(),
+            city: _city.text.trim(),
+          );
       ref.read(authControllerProvider.notifier).setUser(user);
-      if (mounted) showSnack(context, 'Region updated');
+      if (mounted) showSnack(context, 'Details updated');
     } on ApiException catch (e) {
       if (mounted) showSnack(context, e.message);
     } finally {
@@ -186,7 +197,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           onChangePhoto: _changePhoto,
           onEditName: _editName,
         ),
-        SectionHeader('Your region', subtitle: 'Used for localized information only'),
+        SectionHeader('Contact & region', subtitle: 'Your phone number and area for localized information'),
+        TextField(
+          controller: _phone,
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(labelText: 'Phone number'),
+        ),
+        SizedBox(height: 10),
         TextField(controller: _country, decoration: InputDecoration(labelText: 'Country')),
         SizedBox(height: 10),
         TextField(controller: _city, decoration: InputDecoration(labelText: 'City / area')),
@@ -194,7 +211,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         OutlinedButton(
           style: OutlinedButton.styleFrom(minimumSize: Size.fromHeight(46)),
           onPressed: _savingRegion ? null : _saveRegion,
-          child: Text(_savingRegion ? 'Saving…' : 'Save region'),
+          child: Text(_savingRegion ? 'Saving…' : 'Save details'),
         ),
         const SectionHeader('Appearance', subtitle: 'Light, dark, or follow your device'),
         const _AppearancePicker(),

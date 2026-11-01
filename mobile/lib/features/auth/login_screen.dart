@@ -39,6 +39,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await ref.read(authControllerProvider.notifier).login(_email.text, _password.text);
       // Router redirect takes the user to Home.
     } on ApiException catch (e) {
+      if (e.errorCode == 'email_not_verified' && mounted) {
+        // The server has emailed a fresh code; confirm the address, then sign in.
+        context.go('/verify-email', extra: (email: _email.text.trim(), password: _password.text));
+        return;
+      }
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -81,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   validator: (v) => (v == null || v.isEmpty) ? 'Enter your password' : null,
                 ),
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: TextButton(
                     onPressed: () => context.go(
                       Uri(path: '/forgot-password', queryParameters: {

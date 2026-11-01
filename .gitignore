@@ -26,3 +26,5 @@ ml/raw_*/
 ml/data_v*/
 ml/features/
 ml/*.log
+# Prepared training images (large, licensed datasets)
+ml/data_parts/

@@ -67,6 +67,7 @@ def main():
     p.add_argument("--batch", type=int, default=24)
     p.add_argument("--limit", type=int, default=0, help="images per split, for a quick timing test")
     p.add_argument("--splits", default="train,test")
+    p.add_argument("--tag", default="", help="dataset name added to the output file, e.g. dermacon")
     args = p.parse_args()
 
     torch.manual_seed(0)
@@ -96,8 +97,9 @@ def main():
         X = np.stack([np.concatenate(f) for f in feats])
         y = np.array([c for _, c in items])
         suffix = f"_limit{args.limit}" if args.limit else ""
+        tag = f"_{args.tag}" if args.tag else ""
         np.savez_compressed(
-            out_dir / f"{args.backbone}_{split}{suffix}.npz", X=X, y=y, labels=np.array(labels),
+            out_dir / f"{args.backbone}{tag}_{split}{suffix}.npz", X=X, y=y, labels=np.array(labels),
             paths=np.array([str(f.relative_to(args.data)) for f, _ in items]),
         )
         print(f"{split}: saved {X.shape} in {(time.time() - t0) / 60:.1f} min", flush=True)

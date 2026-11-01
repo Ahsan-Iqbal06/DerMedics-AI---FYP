@@ -6,6 +6,7 @@ class AppUser {
     required this.id,
     required this.fullName,
     required this.email,
+    required this.phone,
     required this.country,
     required this.city,
     this.avatarUrl,
@@ -14,6 +15,7 @@ class AppUser {
   final int id;
   final String fullName;
   final String email;
+  final String phone;
   final String country;
   final String city;
 
@@ -27,6 +29,7 @@ class AppUser {
         id: j['id'] as int,
         fullName: j['full_name'] as String,
         email: j['email'] as String,
+        phone: j['phone'] as String? ?? '',
         country: j['country'] as String? ?? '',
         city: j['city'] as String? ?? '',
         avatarUrl: j['avatar_url'] as String?,

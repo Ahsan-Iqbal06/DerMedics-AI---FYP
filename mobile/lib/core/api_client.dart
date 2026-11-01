@@ -9,9 +9,12 @@ import 'config.dart';
 
 /// Thrown for any API failure, carrying a message safe to show to the user.
 class ApiException implements Exception {
-  ApiException(this.message, {this.statusCode});
+  ApiException(this.message, {this.statusCode, this.errorCode});
   final String message;
   final int? statusCode;
+
+  /// Machine-readable reason from the server's X-Error-Code header, e.g. 'email_not_verified'.
+  final String? errorCode;
 
   @override
   String toString() => message;
@@ -21,7 +24,10 @@ class ApiException implements Exception {
     if (error is DioException) {
       final data = error.response?.data;
       final code = error.response?.statusCode;
-      if (data is Map && data['detail'] is String) return ApiException(data['detail'] as String, statusCode: code);
+      if (data is Map && data['detail'] is String) {
+        return ApiException(data['detail'] as String,
+            statusCode: code, errorCode: error.response?.headers.value('x-error-code'));
+      }
       switch (error.type) {
         case DioExceptionType.connectionError:
         case DioExceptionType.connectionTimeout:

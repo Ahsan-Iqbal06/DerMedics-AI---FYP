@@ -1,5 +1,6 @@
 import io
 import os
+import re
 import tempfile
 
 _tmp = tempfile.mkdtemp(prefix="dermedics-test-")
@@ -9,13 +10,21 @@ os.environ["LLM_API_KEY"] = ""
 os.environ["MODEL_PATH"] = ""
 os.environ["GOOGLE_PLACES_KEY"] = ""
 os.environ["SMTP_HOST"] = ""
+os.environ["JWT_SECRET"] = "test-only-secret-0123456789abcdefghijklmnopqrstuvwxyz"
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 from PIL import Image, ImageDraw  # noqa: E402
 
-from app.core.security import auth_rate_limiter, reset_rate_limiter  # noqa: E402
+from app.core.security import (  # noqa: E402
+    analysis_rate_limiter,
+    auth_rate_limiter,
+    login_guard,
+    refresh_rate_limiter,
+    reset_rate_limiter,
+)
 from app.main import app  # noqa: E402
+from app.services.email import DEV_OUTBOX  # noqa: E402
 from seed import seed  # noqa: E402
 
 seed()
@@ -25,8 +34,8 @@ PASSWORD = "Str0ng!Pass"
 
 @pytest.fixture(autouse=True)
 def _reset_limiter():
-    auth_rate_limiter.reset()
-    reset_rate_limiter.reset()
+    for limiter in (auth_rate_limiter, reset_rate_limiter, refresh_rate_limiter, analysis_rate_limiter, login_guard):
+        limiter.reset()
 
 
 @pytest.fixture
@@ -42,12 +51,18 @@ def register(client, email="hasnain@example.com", city="Abbottabad"):
             "email": email,
             "password": PASSWORD,
             "confirm_password": PASSWORD,
+            "phone": "0300 123 4567",
             "country": "Pakistan",
             "city": city,
             "accept_terms": True,
         },
     )
     assert r.status_code == 201, r.text
+    # Activate the account with the emailed code, which also signs in.
+    msg = next(m for m in reversed(DEV_OUTBOX) if m["to"] == email.lower())
+    code = re.search(r"\b(\d{6})\b", msg["text"]).group(1)
+    r = client.post("/api/auth/verify-email", json={"email": email, "password": PASSWORD, "code": code})
+    assert r.status_code == 200, r.text
     return r.json()
 
 
@@ -67,3 +82,8 @@ def skin_image(fmt="JPEG", size=400, flat=False) -> bytes:
     buf = io.BytesIO()
     img.save(buf, fmt)
     return buf.getvalue()
+
+
+def auth_headers_for(client, email: str) -> dict:
+    tokens = register(client, email=email)
+    return {"Authorization": f"Bearer {tokens['access_token']}"}

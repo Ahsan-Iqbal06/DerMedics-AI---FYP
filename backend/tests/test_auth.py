@@ -32,13 +32,13 @@ def test_duplicate_email_rejected(client):
     r = client.post(
         "/api/auth/register",
         json={"full_name": "Someone", "email": "DUP@example.com", "password": PASSWORD,
-              "confirm_password": PASSWORD, "accept_terms": True},
+              "confirm_password": PASSWORD, "phone": "03001234567", "accept_terms": True},
     )
     assert r.status_code == 409
 
 
 def test_weak_password_and_mismatch(client):
-    base = {"full_name": "Ali Khan", "email": "weak@example.com", "accept_terms": True}
+    base = {"full_name": "Ali Khan", "email": "weak@example.com", "phone": "03001234567", "accept_terms": True}
     r = client.post("/api/auth/register", json={**base, "password": "password", "confirm_password": "password"})
     assert r.status_code == 422 and "uppercase" in r.json()["detail"]
     r = client.post("/api/auth/register", json={**base, "password": PASSWORD, "confirm_password": PASSWORD + "x"})
@@ -85,8 +85,9 @@ def test_avatar_upload_and_remove(client):
     r = client.post("/api/auth/me/avatar", headers=h, files={"image": ("me.png", skin_image("PNG", size=600), "image/png")})
     assert r.status_code == 200, r.text
     url = r.json()["avatar_url"]
-    assert url.startswith("/uploads/avatars/") and url.endswith(".jpg")
-    assert client.get(url).status_code == 200
+    assert url.startswith("/api/files/avatars/") and url.endswith(".jpg")
+    assert client.get(url, headers=h).status_code == 200
+    assert client.get(url).status_code == 401  # photos need sign-in
     assert client.get("/api/auth/me", headers=h).json()["avatar_url"] == url
 
     bad = client.post("/api/auth/me/avatar", headers=h, files={"image": ("x.txt", b"nope", "text/plain")})
@@ -94,4 +95,4 @@ def test_avatar_upload_and_remove(client):
 
     r = client.delete("/api/auth/me/avatar", headers=h)
     assert r.status_code == 200 and r.json()["avatar_url"] is None
-    assert client.get(url).status_code == 404
+    assert client.get(url, headers=h).status_code == 404

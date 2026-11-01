@@ -1,5 +1,7 @@
+import 'dart:typed_data';
 import 'dart:ui' show ImageFilter;
 
+import 'package:dio/dio.dart' show Options, ResponseType;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../features/auth/auth_controller.dart';
 import 'config.dart';
 import 'models.dart';
+import 'repository.dart';
 import 'theme.dart';
 import 'theme_mode.dart';
 
@@ -85,18 +88,68 @@ class UserAvatar extends StatelessWidget {
         child: url == null
             ? initial
             : ClipOval(
-                child: Image.network(
-                  '${AppConfig.baseUrl}$url',
+                child: AuthImage(
+                  url,
                   key: ValueKey(url),
                   width: radius * 2,
                   height: radius * 2,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => initial,
+                  fallback: initial,
                 ),
               ),
       ),
     );
   }
+}
+
+/// A photo stored on the DerMedics server. Photos are private (only their owner may see them), so they are
+/// downloaded through the signed-in API client, which also renews an expired sign-in, rather than as a public URL.
+class AuthImage extends ConsumerStatefulWidget {
+  const AuthImage(this.path, {super.key, this.width, this.height, this.fit = BoxFit.cover, required this.fallback});
+
+  /// Server path such as /api/files/analyses/abc.jpg.
+  final String path;
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final Widget fallback;
+
+  @override
+  ConsumerState<AuthImage> createState() => _AuthImageState();
+}
+
+class _AuthImageState extends ConsumerState<AuthImage> {
+  static final _cache = <String, Uint8List>{};
+  late Future<Uint8List> _bytes = _load();
+
+  @override
+  void didUpdateWidget(AuthImage old) {
+    super.didUpdateWidget(old);
+    if (old.path != widget.path) _bytes = _load();
+  }
+
+  Future<Uint8List> _load() async {
+    final cached = _cache[widget.path];
+    if (cached != null) return cached;
+    final res = await ref
+        .read(apiClientProvider)
+        .dio
+        .get<List<int>>('${AppConfig.baseUrl}${widget.path}', options: Options(responseType: ResponseType.bytes));
+    final bytes = Uint8List.fromList(res.data!);
+    if (_cache.length >= 40) _cache.remove(_cache.keys.first);
+    return _cache[widget.path] = bytes;
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<Uint8List>(
+        future: _bytes,
+        builder: (context, snap) {
+          if (snap.hasData) {
+            return Image.memory(snap.data!, width: widget.width, height: widget.height, fit: widget.fit, gaplessPlayback: true);
+          }
+          if (snap.hasError) return widget.fallback;
+          return SizedBox(width: widget.width, height: widget.height);
+        },
+      );
 }
 
 /// Sun/moon button that flips between light and dark mode with a small spin.

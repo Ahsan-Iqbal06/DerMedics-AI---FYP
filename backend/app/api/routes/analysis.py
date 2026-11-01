@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, read_upload
+from app.core.security import analysis_rate_limiter
 from app.db.session import get_db
 from app.models import Analysis, User
 from app.schemas import AnalysisOut
@@ -11,7 +12,7 @@ from app.services.pipeline import run_analysis, to_out
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 
-@router.post("", response_model=AnalysisOut, status_code=201)
+@router.post("", response_model=AnalysisOut, status_code=201, dependencies=[Depends(analysis_rate_limiter)])
 async def analyze(
     image: UploadFile = File(...),
     body_area: str = Form(""),
@@ -22,7 +23,7 @@ async def analyze(
 ):
     if not consent:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Please confirm you understand this is not a medical diagnosis")
-    data = await image.read()
+    data = await read_upload(image)
     try:
         analysis = run_analysis(db, user, data, body_area.strip()[:60], symptoms.strip())
     except InvalidImageError as e:

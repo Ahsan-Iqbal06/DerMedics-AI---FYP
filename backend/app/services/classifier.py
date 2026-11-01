@@ -40,15 +40,21 @@ class ClassificationResult:
         return self.predictions[0]
 
 
+MAX_PIXELS = 40_000_000  # ~40 MP, larger than any phone camera
+
+
 def load_image(data: bytes) -> Image.Image:
     max_bytes = get_settings().max_upload_mb * 1024 * 1024
     if len(data) > max_bytes:
         raise InvalidImageError(f"Image is larger than {get_settings().max_upload_mb} MB")
     try:
         img = Image.open(io.BytesIO(data))
+        # Only the header is read so far: reject huge dimensions before anything is decoded ("decompression bomb").
+        if img.width * img.height > MAX_PIXELS:
+            raise InvalidImageError("Image dimensions are too large")
         img.verify()
         img = Image.open(io.BytesIO(data))
-    except (UnidentifiedImageError, OSError):
+    except (UnidentifiedImageError, OSError, Image.DecompressionBombError):
         raise InvalidImageError("File is not a valid image")
     if img.format not in ALLOWED_FORMATS:
         raise InvalidImageError("Only JPG, PNG or WEBP images are supported")

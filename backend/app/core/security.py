@@ -43,11 +43,25 @@ def verify_password(password: str, password_hash: str) -> bool:
 DUMMY_HASH = _hasher.hash(secrets.token_urlsafe(16))
 
 
-def create_access_token(user_id: int) -> str:
+DEFAULT_SECRET = "change-me-to-a-long-random-string"
+
+
+def check_secret() -> None:
+    """Refuse to start with a guessable signing key: anyone who knows it can forge sign-in tokens."""
+    secret = get_settings().jwt_secret
+    if secret == DEFAULT_SECRET or len(secret) < 32:
+        raise RuntimeError(
+            "JWT_SECRET in backend/.env must be a random string of at least 32 characters. Generate one with: "
+            'python -c "import secrets; print(secrets.token_urlsafe(48))"'
+        )
+
+
+def create_access_token(user_id: int, version: int = 0) -> str:
     s = get_settings()
     now = datetime.now(UTC)
     payload = {
         "sub": str(user_id),
+        "ver": version,  # bumped on password change/reset, which invalidates older access tokens
         "type": "access",
         "iat": now,
         "exp": now + timedelta(minutes=s.access_token_minutes),
@@ -55,7 +69,7 @@ def create_access_token(user_id: int) -> str:
     return jwt.encode(payload, s.jwt_secret, algorithm=s.jwt_algorithm)
 
 
-def decode_access_token(token: str) -> int:
+def decode_access_token(token: str) -> tuple[int, int]:
     s = get_settings()
     try:
         payload = jwt.decode(token, s.jwt_secret, algorithms=[s.jwt_algorithm])
@@ -65,7 +79,7 @@ def decode_access_token(token: str) -> int:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
     if payload.get("type") != "access":
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
-    return int(payload["sub"])
+    return int(payload["sub"]), int(payload.get("ver", 0))
 
 
 def new_refresh_token() -> tuple[str, str]:
@@ -103,15 +117,53 @@ class RateLimiter:
         self.calls.clear()
 
 
+class LoginGuard:
+    """Locks an email after repeated wrong passwords, whichever IPs they come from (the IP limiter alone can be
+    spread across many addresses)."""
+
+    def __init__(self, max_failures: int = 10, lock_seconds: int = 15 * 60):
+        self.max_failures = max_failures
+        self.lock_seconds = lock_seconds
+        self.failures: dict[str, deque[float]] = defaultdict(deque)
+
+    def _recent(self, email: str) -> deque[float]:
+        window = self.failures[email]
+        now = time.monotonic()
+        while window and now - window[0] > self.lock_seconds:
+            window.popleft()
+        return window
+
+    def check(self, email: str) -> None:
+        if len(self._recent(email)) >= self.max_failures:
+            raise HTTPException(
+                status.HTTP_429_TOO_MANY_REQUESTS,
+                "Too many incorrect attempts for this account. Try again in 15 minutes or reset your password.",
+            )
+
+    def failed(self, email: str) -> None:
+        self._recent(email).append(time.monotonic())
+
+    def succeeded(self, email: str) -> None:
+        self.failures.pop(email, None)
+
+    def reset(self) -> None:
+        self.failures.clear()
+
+
+login_guard = LoginGuard()
 auth_rate_limiter = RateLimiter(max_calls=5, per_seconds=60)
+refresh_rate_limiter = RateLimiter(max_calls=30, per_seconds=60)
+# Each analysis runs the model and a paid LLM call.
+analysis_rate_limiter = RateLimiter(max_calls=10, per_seconds=60)
 # Covers forgot + verify + reset together; wrong codes are separately capped at 5 per code.
 reset_rate_limiter = RateLimiter(max_calls=10, per_seconds=60)
 
 
-def reset_code_hash(user_id: int, code: str) -> str:
-    """Keyed hash of a reset code, so a leaked database can't be brute-forced offline."""
+def reset_code_hash(user_id: int, code: str, purpose: str = "reset") -> str:
+    """Keyed hash of an emailed code, so a leaked database can't be brute-forced offline. The purpose is mixed in,
+    so a sign-up code can never be used as a password-reset code."""
     s = get_settings()
-    return hmac.new(s.jwt_secret.encode(), f"{user_id}:{code}".encode(), hashlib.sha256).hexdigest()
+    return hmac.new(s.jwt_secret.encode(), f"{purpose}:{user_id}:{code}".encode(), hashlib.sha256).hexdigest()
 
 
 def create_reset_token(user_id: int, reset_id: int) -> str:

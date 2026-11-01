@@ -1,9 +1,18 @@
+import re
 from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 from app.core.security import password_problems
+
+
+def clean_phone(v: str) -> str:
+    """Accepts local or international numbers (spaces, dashes and brackets are ignored); keeps a leading +."""
+    digits = re.sub(r"[\s\-().]", "", v.strip())
+    if not re.fullmatch(r"\+?\d{7,15}", digits):
+        raise ValueError("Enter a valid phone number, e.g. 03001234567 or +923001234567")
+    return digits
 
 
 class ORM(BaseModel):
@@ -16,6 +25,7 @@ class RegisterIn(BaseModel):
     email: EmailStr
     password: str = Field(max_length=128)
     confirm_password: str
+    phone: str = Field(max_length=25)
     country: str = Field(default="Pakistan", max_length=80)
     city: str = Field(default="", max_length=80)
     accept_terms: bool
@@ -32,6 +42,11 @@ class RegisterIn(BaseModel):
     @classmethod
     def lower_email(cls, v: str) -> str:
         return v.lower()
+
+    @field_validator("phone")
+    @classmethod
+    def valid_phone(cls, v: str) -> str:
+        return clean_phone(v)
 
     @field_validator("password")
     @classmethod
@@ -63,6 +78,7 @@ class UserOut(ORM):
     id: int
     full_name: str
     email: str
+    phone: str = ""
     country: str
     city: str
     avatar_url: str | None = None
@@ -73,6 +89,12 @@ class UserUpdate(BaseModel):
     full_name: str | None = Field(default=None, min_length=2, max_length=120)
     country: str | None = Field(default=None, max_length=80)
     city: str | None = Field(default=None, max_length=80)
+    phone: str | None = Field(default=None, max_length=25)
+
+    @field_validator("phone")
+    @classmethod
+    def valid_phone(cls, v: str | None) -> str | None:
+        return None if v is None else clean_phone(v)
 
 
 class ChangePasswordIn(BaseModel):
@@ -99,6 +121,11 @@ class ForgotPasswordIn(BaseModel):
 
 class VerifyResetCodeIn(ForgotPasswordIn):
     code: str = Field(pattern=r"^\d{6}$", description="6-digit code from the email")
+
+
+class VerifyEmailIn(VerifyResetCodeIn):
+    # The password chosen at sign-up: only the person who chose it AND can read the inbox activates the account.
+    password: str = Field(min_length=1, max_length=128)
 
 
 class ResetTokenOut(BaseModel):

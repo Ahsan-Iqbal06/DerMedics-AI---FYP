@@ -36,11 +36,35 @@ def test_full_reset_flow(client):
     assert r.status_code == 400
 
 
-def test_unknown_email_gets_same_answer_and_no_email(client):
+def test_unknown_email_is_rejected_and_no_email_sent(client):
     before = len(DEV_OUTBOX)
     r = client.post("/api/auth/forgot-password", json={"email": "nobody-here@example.com"})
-    assert r.status_code == 202
+    assert r.status_code == 404 and "No account" in r.json()["detail"]
     assert len(DEV_OUTBOX) == before
+
+
+def test_code_goes_to_each_users_own_email(client):
+    register(client, email="first.user@example.com")
+    register(client, email="second.user@example.com")
+    r = client.post("/api/auth/forgot-password", json={"email": "Second.User@example.com"})
+    assert r.status_code == 202 and "second.user@example.com" in r.json()["message"]
+    assert not any(m["to"] == "first.user@example.com" and "reset" in m["subject"] for m in DEV_OUTBOX)
+    code = last_code("second.user@example.com")
+    # The code only works for the account it was sent to.
+    assert client.post("/api/auth/verify-reset-code",
+                       json={"email": "first.user@example.com", "code": code}).status_code == 400
+    assert client.post("/api/auth/verify-reset-code",
+                       json={"email": "second.user@example.com", "code": code}).status_code == 200
+
+
+def test_register_saves_phone_and_rejects_bad_numbers(client):
+    tokens = register(client, email="phone.user@example.com")
+    me = client.get("/api/auth/me", headers={"Authorization": f"Bearer {tokens['access_token']}"}).json()
+    assert me["phone"] == "03001234567"
+    r = client.post("/api/auth/register", json={
+        "full_name": "Bad Phone", "email": "bad.phone@example.com", "password": PASSWORD,
+        "confirm_password": PASSWORD, "phone": "12ab", "accept_terms": True})
+    assert r.status_code == 422 and "phone" in r.json()["detail"]
 
 
 def test_wrong_code_attempts_are_limited(client):

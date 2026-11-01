@@ -33,11 +33,13 @@ class DerMedicsRepository {
         _auth,
       );
 
-  Future<AuthResult> register({
+  /// Creates the account and emails a 6-digit code; the account signs in once [verifyEmail] confirms it.
+  Future<void> register({
     required String fullName,
     required String email,
     required String password,
     required String confirmPassword,
+    required String phone,
     required String country,
     required String city,
     required bool acceptTerms,
@@ -50,13 +52,25 @@ class DerMedicsRepository {
             'email': email,
             'password': password,
             'confirm_password': confirmPassword,
+            'phone': phone,
             'country': country,
             'city': city,
             'accept_terms': acceptTerms,
           },
           options: ApiClient.noAuth,
         ),
+        (_) {},
+      );
+
+  Future<AuthResult> verifyEmail(String email, String password, String code) => api.call(
+        (dio) => dio.post('/auth/verify-email',
+            data: {'email': email, 'password': password, 'code': code}, options: ApiClient.noAuth),
         _auth,
+      );
+
+  Future<void> resendVerification(String email) => api.call(
+        (dio) => dio.post('/auth/resend-verification', data: {'email': email}, options: ApiClient.noAuth),
+        (_) {},
       );
 
   Future<void> forgotPassword(String email) => api.call(
@@ -86,9 +100,10 @@ class DerMedicsRepository {
 
   Future<AppUser> me() => api.call((dio) => dio.get('/auth/me'), (d) => AppUser.fromJson(d as Map<String, dynamic>));
 
-  Future<AppUser> updateProfile({String? fullName, String? country, String? city}) => api.call(
+  Future<AppUser> updateProfile({String? fullName, String? phone, String? country, String? city}) => api.call(
         (dio) => dio.patch('/auth/me', data: {
           'full_name': ?fullName,
+          'phone': ?phone,
           'country': ?country,
           'city': ?city,
         }),

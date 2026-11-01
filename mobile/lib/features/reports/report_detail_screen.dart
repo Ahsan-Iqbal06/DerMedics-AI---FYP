@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/api_client.dart';
-import '../../core/config.dart';
 import '../../core/models.dart';
 import '../../core/repository.dart';
 import '../../core/theme.dart';
@@ -70,12 +69,11 @@ class ReportDetailScreen extends ConsumerWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          '${AppConfig.baseUrl}${a.imageUrl}',
+                        child: AuthImage(
+                          a.imageUrl,
                           width: 86,
                           height: 86,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => IconBubble(Icons.image_outlined, size: 86),
+                          fallback: IconBubble(Icons.image_outlined, size: 86),
                         ),
                       ),
                       SizedBox(width: 14),
